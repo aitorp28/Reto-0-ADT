@@ -6,8 +6,8 @@
 package application;
 
 /**
- *
- * @author Andoni Alday
+ * Main 1
+ * @author Andoni Alday 
  */
 public class Application {
 
