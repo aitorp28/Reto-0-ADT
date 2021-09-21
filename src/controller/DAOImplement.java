@@ -34,12 +34,7 @@ public class DAOImplement implements DAO{
     @Override
     public void createAccount() {
         Account acc = new Account();
-        acc.setBeginBalance(0);
-        acc.setBalance(acc.getBeginBalance());
-        acc.setCreditLine(0);
-        acc.setDescription("");
-        acc.setType(0);
-        acc.setBeginBalanceTimeStamp(LocalDate.now());
+        acc.create();
     }
 
     @Override

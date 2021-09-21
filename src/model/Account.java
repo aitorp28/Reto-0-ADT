@@ -117,6 +117,15 @@ public class Account {
     public void setType(int type) {
         this.type = type;
     }
+
+    public void create() {
+        this.setBeginBalance(0);
+        this.setBalance(this.getBeginBalance());
+        this.setCreditLine(0);
+        this.setDescription("");
+        this.setType(0);
+        this.setBeginBalanceTimeStamp(LocalDate.now());
+    }
     
     
 }
