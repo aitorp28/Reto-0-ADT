@@ -5,6 +5,10 @@
  */
 package controller;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.List;
 import logical.DAO;
 import model.Account;
@@ -17,6 +21,11 @@ import model.Movement;
  */
 public class DAOImplement implements DAO{
 
+    // Atributos
+	private Connection con;
+	private PreparedStatement stmt;
+	private ConnectionOpenClose conection = new ConnectionOpenClose();
+    
     @Override
     public List<Account> searchAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -25,7 +34,12 @@ public class DAOImplement implements DAO{
     @Override
     public void createAccount() {
         Account acc = new Account();
-        
+        acc.setBeginBalance(0);
+        acc.setBalance(acc.getBeginBalance());
+        acc.setCreditLine(0);
+        acc.setDescription("");
+        acc.setType(0);
+        acc.setBeginBalanceTimeStamp(LocalDate.now());
     }
 
     @Override
@@ -40,7 +54,8 @@ public class DAOImplement implements DAO{
 
     @Override
     public void createCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Customer cust = new Customer();
+        
     }
 
     @Override
