@@ -162,4 +162,8 @@ public class Customer implements Serializable{
     public void setZip(int zip) {
         this.zip = zip;
     }
+
+    public void setData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
