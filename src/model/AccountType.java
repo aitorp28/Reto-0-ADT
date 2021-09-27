@@ -9,8 +9,17 @@ import java.io.Serializable;
 
 /**
  *
- * @author 2dam
+ * @author Aitpr Perez
  */
 public enum AccountType implements Serializable{
-    STANDARD, CREDIT;
+
+    /**
+     *
+     */
+    STANDARD,
+
+    /**
+     *
+     */
+    CREDIT;
 }

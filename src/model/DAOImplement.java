@@ -15,11 +15,11 @@ import java.util.Collections;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import logical.DAO;
 
 /**
+ * Implemented class to controll the interactions with the database
  *
- * @author 2dam
+ * @author Andoni Alday
  */
 public class DAOImplement implements DAO {
 
@@ -30,18 +30,25 @@ public class DAOImplement implements DAO {
     private boolean exists;
 
     // SQL Querys
-    private final String searchAccount = "SELECT * from Account WHERE id = ?";
-    private final String searchCustomer = "SELECT * from Customer WHERE id = ?";
-    private final String readAccount = "SELECT * from Account WHERE id = ?";
-    private final String readBalance = "SELECT balance from Account WHERE account_id = ?";
-    private final String updateAccount = "";
-    private final String createAccount = "INSERT into account (balance, beginBalance, beginBalanceTimestamp,creditLine, description, `type`) VALUES (?,?,CURRENT_TIMESTAMP,?,?,?)";
-    private final String createCustomer = "INSERT into customer (city, email, firstName, lastName, middleInitial, phone, state, street, zip) VALUES (?,?,?,?,?,?,?,?,?)";
-    private final String linkAccountCustomer = "INSER into customer_account (?,?)";
+    private final String searchAccount = "SELECT * FROM account WHERE id = ?";
+    private final String searchCustomer = "SELECT * FROM customer WHERE id = ?";
+    private final String readAccount = "SELECT * FROM account WHERE id = ?";
+    private final String readBalance = "SELECT balance FROM account WHERE account_id = ?";
+    private final String updateAccount = "UPDATE account SET balance = ? WHERE id = ?";
+    private final String createAccount = "INSERT INTO Account (balance, beginBalance, beginBalanceTimestamp,creditLine, description, `type`) VALUES (?,?,CURRENT_TIMESTAMP,?,?,?)";
+    private final String createCustomer = "INSERT INTO Customer (city, email, firstName, lastName, middleInitial, phone, state, street, zip) VALUES (?,?,?,?,?,?,?,?,?)";
+    private final String createMovement = "INSERT INTO Customer (timestamp, amount, balance, description, account_id) VALUES (?,?,?,?)";
+    private final String linkAccountCustomer = "INSERT INTO customer_account (?,?)";
     private final String listAccount = "SELECT account.* FROM account,customer_account WHERE Account.id = customer_account.accounts_id AND customer_account.customers_id = ?";
-
-    // PENDIENTE
+    private final String listMovement = "SELECT * FROM movement WHERE account_id = ?";
+    
     // Crear Cliente 
+    /**
+     * Method to create a new Customer on the DDBB
+     *
+     * @throws ConnectException if cannot connect to the DDBB
+     * @throws CreateException if fails trying to write on the DDBB
+     */
     @Override
     public void createCustomer() throws ConnectException, CreateException {
         Customer cust = new Customer();
@@ -52,7 +59,7 @@ public class DAOImplement implements DAO {
             throw new ConnectException(ex.getMessage());
         }
         try {
-            stmt = con.prepareStatement(createAccount);
+            stmt = con.prepareStatement(createCustomer);
             stmt.setString(1, cust.getCity());
             stmt.setString(2, cust.getEmail());
             stmt.setString(3, cust.getFirstName());
@@ -74,6 +81,11 @@ public class DAOImplement implements DAO {
     }
 
     // Consultar Datos Cliente
+    /**
+     * Method to search for a Customer on the DDBB
+     *
+     * @return the desired customer
+     */
     @Override
     public Customer searchCustomer() {
         Customer cus = null;
@@ -121,9 +133,14 @@ public class DAOImplement implements DAO {
     }
 
     // Listar cuentas de Cliente
+    /**
+     * Method to list the Accounts from a Customer from the DDBB
+     *
+     * @return Collection of desired accounts
+     */
     @Override
     public Collection<Account> listAccount() {
-        Collection<Account> accounts = new TreeSet<>(Collections.emptySortedSet());
+        Collection<Account> accounts = new TreeSet<>();
         Account acc = null;
         long id = acc.askId();
         ResultSet rs = null;
@@ -167,8 +184,15 @@ public class DAOImplement implements DAO {
     }
 
     // Crear Cuenta para Cliente
+    /**
+     * Method to create a new Account on the DDBB
+     *
+     * @throws ConnectException if cannot connect to the DDBB
+     * @throws CreateException if fails trying to write on the DDBB
+     * @throws ReadException if fails trying to read from the DDBB
+     */
     @Override
-    public void createAccount() throws ConnectException, CreateException, ReadException{
+    public void createAccount() throws ConnectException, CreateException, ReadException {
         boolean exis = true;
         long clie;
         clie = Customer.askId();
@@ -176,7 +200,7 @@ public class DAOImplement implements DAO {
         try {
             exis = existingCustomer(clie);
         } catch (ConnectException | ReadException ex) {
-                throw new ReadException(ex.getMessage());
+            throw new ReadException(ex.getMessage());
         }
 
         if (exis) {
@@ -226,12 +250,23 @@ public class DAOImplement implements DAO {
 
     // PENDIENTE
     // Añadir Clientes a Cuentas
+    /**
+     * Method to add a Customer to an existing account
+     *
+     * @throws ConnectException if cannot connect to the DDBB
+     * @throws CreateException if fails trying to write on the DDBB
+     */
     @Override
-    public void addCustomerToAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addCustomerToAccount() throws ConnectException, CreateException {
+        
     }
 
     // Consultar Datos de una Cuenta
+    /**
+     * Method to search for an Account on the DDBB
+     *
+     * @return the desired account
+     */
     @Override
     public Account readAccount() {
         Account acc = null;
@@ -275,57 +310,144 @@ public class DAOImplement implements DAO {
         return acc;
     }
 
-    // EN PROCESO
     // Añadir Movimiento
+    /**
+     * Method to create a new Movement on the DDBB
+     *
+     * @throws ConnectException if cannot connect to the DDBB
+     * @throws CreateException if fails trying to write on the DDBB
+     * @throws ReadException if fails trying to read from the DDBB
+     * @throws UpdateException if fails trying to update data in the DDBB
+     */
     @Override
-    public void createMovement() {
+    public void createMovement() throws ConnectException, CreateException, ReadException, UpdateException {
         long acc;
+        double bal = 0;
+        Movement mov = null;
         System.out.println("Introduzca el importe inicial de la cuenta");
         acc = Utilities.leerLong();
         boolean exis = false;
         try {
             exis = existingAccount(acc);
         } catch (ConnectException ex) {
-            Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ConnectException(ex.getMessage());
         } catch (ReadException ex) {
-            Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ReadException(ex.getMessage());
         }
         if (exis) {
             try {
-                double bal = readBalance(acc);
+                bal = readBalance(acc);
             } catch (ConnectException ex) {
-                Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ConnectException(ex.getMessage());
             } catch (ReadException ex) {
-                Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ReadException(ex.getMessage());
             }
             try {
-                if (existingAccount(acc)) {
-                    Movement mov = new Movement();
-                    mov.setData(acc);
-                }
+                mov = new Movement();
+                mov.setData(acc, bal);
+                con = conection.openConnection();
             } catch (ConnectException ex) {
-                Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ReadException ex) {
-                Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ConnectException(ex.getMessage());
+            }
+            try {
+                stmt = con.prepareStatement(createMovement);
+                stmt.setDouble(1, mov.getAmount());
+                stmt.setDouble(2, mov.getBalance());
+                stmt.setString(3, mov.getDescription());
+                stmt.setDouble(4, acc);
+                stmt.executeUpdate();
+            } catch (Exception e) {
+                throw new CreateException("Error al Crear la Cuenta");
+            }
+            try {
+                conection.closeConnection(stmt, con);
+            } catch (ConnectException ex) {
+                throw new ConnectException(ex.getMessage());
+            }
+            try {
+                con = conection.openConnection();
+            } catch (ConnectException ex) {
+                throw new ConnectException(ex.getMessage());
+            }
+            try {
+                stmt = con.prepareStatement(updateAccount);
+                stmt.setDouble(1, mov.getBalance());
+                stmt.setDouble(2, acc);
+                stmt.executeUpdate();
+            } catch (Exception e) {
+                throw new UpdateException("Error al Actualizar la Cuenta");
+            }
+            try {
+                conection.closeConnection(stmt, con);
+            } catch (ConnectException ex) {
+                throw new ConnectException(ex.getMessage());
             }
         }
     }
 
     // PENDIENTE
     // Consultar Datos Movimiento
+    /**
+     * Method to list the Movements of a expecified account
+     *
+     * @return collection of movements
+     * @throws ConnectException if cannot connect to the DDBB
+     * @throws ReadException if fails trying to read from the DDBB
+     */
     @Override
-    public Collection<Movement> listMovement() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<Movement> listMovement() throws ReadException, ConnectException {
+        Collection<Movement> movs = new TreeSet<>();
+        long num = Account.askId();
+        Movement mov = null;
+        if (existingAccount(num)) {
+            ResultSet rs = null;
+        try {
+            con = conection.openConnection();
+        } catch (ConnectException ex) {
+            new ConnectException("Error al Leer");
+        }
+        try {
+            stmt = con.prepareStatement(listMovement);
+            stmt.setLong(1, num);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                mov = new Movement();
+                mov.setId(rs.getLong("id"));
+                mov.setAmount(rs.getDouble("amount"));
+                mov.setBalance(rs.getDouble("balance"));
+                mov.setTimeStamp(rs.getTimestamp("timestamp"));
+                mov.setDescription(rs.getString("description"));
+                mov.setAccount_id(num);
+                movs.add(mov);
+            }
+        } catch (Exception e) {
+            new ReadException("Error al Leer");
+        }
+        try {
+            conection.closeConnection(stmt, con);
+        } catch (ConnectException e) {
+            new ConnectException(e.getMessage());
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (Exception e) {
+                new ReadException("Error al Leer");
+            }
+        }
+        }
+        return movs;
     }
 
     // Métodos Adicionales de comprobaciones
     /**
+     * Method to check the existence of an Account via its id
      *
      * @param num Generated randomlly number for new Account ID
      * @return Returns a boolean indicating the existence of an account with the
      * provided number to avoid duplicates
-     * @throws ConnectException
-     * @throws ReadException
+     * @throws ConnectException if cannot connect to the DDBB
+     * @throws ReadException if fails trying to read from the DDBB
      */
     public boolean existingAccount(long num) throws ConnectException, ReadException {
         ResultSet rs = null;
@@ -364,12 +486,13 @@ public class DAOImplement implements DAO {
     }
 
     /**
+     * Method to check the existence of a Customer via its id
      *
      * @param num asked number for Customer ID
      * @return Returns a boolean indicating the existence of a customer with the
      * provided number to enable Account Creation
-     * @throws ConnectException
-     * @throws ReadException
+     * @throws ConnectException if cannot connect to the DDBB
+     * @throws ReadException if fails trying to read from the DDBB
      */
     private boolean existingCustomer(long num) throws ConnectException, ReadException {
         ResultSet rs = null;
@@ -407,17 +530,17 @@ public class DAOImplement implements DAO {
     }
 
     /**
+     * Auxiliar method to obtain the balance on an exact moment from an account
      *
-     * @param acc
-     * @return
-     * @throws ConnectException
-     * @throws ReadException
+     * @param acc the id of the account the balance is wanted from
+     * @return the balance of the account
+     * @throws ConnectException if cannot connect to the DDBB
+     * @throws ReadException if fails trying to read from the DDBB
      */
     private double readBalance(long acc) throws ConnectException, ReadException {
         long bal = 0;
         ResultSet rs = null;
         exists = false;
-        String id = String.valueOf(acc);
         try {
             con = conection.openConnection();
         } catch (ConnectException e) {

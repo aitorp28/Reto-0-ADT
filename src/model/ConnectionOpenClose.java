@@ -8,20 +8,31 @@ import java.util.ResourceBundle;
 
 import exception.*;
 
+/**
+ *
+ * @author Andoni Alday
+ */
 public class ConnectionOpenClose {
 	
 	private ResourceBundle configFile;
 	private String url, user,  pass;
 	
-
-	public ConnectionOpenClose() {
+    /**
+     *
+     */
+    public ConnectionOpenClose() {
 		configFile = ResourceBundle.getBundle("modelo.config");
 		url = configFile.getString("URL");
 		user = configFile.getString("USER");
 		pass = configFile.getString("PASSWORD");
 	}
 
-	public Connection openConnection() throws ConnectException {
+    /**
+     *
+     * @return
+     * @throws ConnectException
+     */
+    public Connection openConnection() throws ConnectException {
 
 		Connection con= null;
 		
@@ -33,7 +44,13 @@ public class ConnectionOpenClose {
 		return con;
 	}
 
-	public void closeConnection(PreparedStatement stmt, Connection con) throws ConnectException {
+    /**
+     *
+     * @param stmt
+     * @param con
+     * @throws ConnectException
+     */
+    public void closeConnection(PreparedStatement stmt, Connection con) throws ConnectException {
 
 		if (stmt != null || con != null) {
 			try {

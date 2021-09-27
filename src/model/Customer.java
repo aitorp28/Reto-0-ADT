@@ -10,7 +10,7 @@ import utilities.Utilities;
 
 /**
  *
- * @author 2dam
+ * @author Jaime
  */
 public class Customer implements Serializable {
 
@@ -165,10 +165,17 @@ public class Customer implements Serializable {
         this.zip = zip;
     }
 
+    /**
+     *
+     */
     public void setData() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @return
+     */
     public static long askId() {
         long id = Utilities.leerInt("Introduzca el id de la cuenta a buscar");
         return id;

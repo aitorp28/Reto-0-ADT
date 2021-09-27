@@ -11,9 +11,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Class with multiple generic utilities to ease the reading of the main code
+ * @author Andoni Alday
+ */
 public class Utilities {
 
-	public static String introducirCadena(){
+    /**
+     * Method to control the input of a String
+     * @return String ready for use 
+     */
+    public static String introducirCadena(){
 		 String cadena="";
 		 InputStreamReader entrada =new InputStreamReader(System.in);
 		 BufferedReader teclado= new BufferedReader(entrada);
@@ -25,7 +33,12 @@ public class Utilities {
 		 return cadena;
 	}
 
-	public static String introducirCadena(String mensaje){
+    /**
+     * Method to control the input of a String with a display message
+     * @param mensaje message that displays to the user asking for an input
+     * @return String ready for use
+     */
+    public static String introducirCadena(String mensaje){
 		 String cadena="";
 		 InputStreamReader entrada =new InputStreamReader(System.in);
 		 BufferedReader teclado= new BufferedReader(entrada);
@@ -39,7 +52,12 @@ public class Utilities {
 		 return cadena;
 	}
 
-	public static String leerString(int x){
+    /**
+     *Method to control the input of a String with a maximum length
+     * @param x maximum length of the input String
+     * @return String ready for use
+     */
+    public static String leerString(int x){
 		String cadena = null;
 		boolean ok;
 		do{
@@ -53,7 +71,11 @@ public class Utilities {
 		return cadena;
 	}
 	
-	public static char leerChar(){
+    /**
+     * Method to control the input of a single character
+     * @return character ready for use
+     */
+    public static char leerChar(){
 		boolean error=false;
 		String letra;
 		
@@ -69,7 +91,12 @@ public class Utilities {
 		return letra.charAt(0);
 	}
 
-	public static char leerChar(String mensaje)
+    /**
+     * Method to control the input of a character with a display message
+     * @param mensaje message that displays to the user asking for an input
+     * @return character ready for use
+     */
+    public static char leerChar(String mensaje)
 	{
 		char letra;
 		String frase;
@@ -86,9 +113,14 @@ public class Utilities {
 		return letra;
 	}
 	
-	public static char leerChar (char x, char y)
+    /**
+     * Method to control the input of a character between two predetermined option
+     * @param x first possible correct inpuy
+     * @param y second possible correct input
+     * @return possible character input
+     */
+    public static char leerChar (char x, char y)
 	{
-
 		char letra;
 		String frase;
 		do{
@@ -107,8 +139,12 @@ public class Utilities {
 		return letra;		
 	}
 	
-
-	public static char leerCharArray(char caracteres[]){
+    /**
+     * Method to control the input of a character between a set of predetermined option
+     * @param caracteres collection of possible correct inputs
+     * @return possible character input
+     */
+    public static char leerCharArray(char caracteres[]){
 		int i;
 		boolean error=false;
 		String letra;
@@ -137,7 +173,13 @@ public class Utilities {
 		return aux;
 	}
 	
-	public static char leerCharArray(char caracteres[],String mensaje){
+    /**
+     * Method to control the input of a character between a set of predetermined option
+     * @param caracteres collection of possible correct inputs
+     * @param mensaje message that displays to the user asking for an input
+     * @return possible character input
+     */
+    public static char leerCharArray(char caracteres[],String mensaje){
 		int i;
 		boolean error=false;
 		String letra;
@@ -166,7 +208,11 @@ public class Utilities {
 		return aux;
 	}
 	
-	public static int leerInt(){
+    /**
+     *
+     * @return
+     */
+    public static int leerInt(){
 		int num=0;
 		boolean error;
 		do{
@@ -182,7 +228,12 @@ public class Utilities {
 		return num;
 	}
 
-	public static int leerInt(String mensaje){
+    /**
+     *
+     * @param mensaje
+     * @return
+     */
+    public static int leerInt(String mensaje){
 		int num=0;
 		boolean error;
 		System.out.println(mensaje);
@@ -199,7 +250,13 @@ public class Utilities {
 		return num;
 	}
 	
-	public static int leerInt(int x, int y){
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static int leerInt(int x, int y){
 		int num;
 		boolean error;
 		do{
@@ -221,7 +278,14 @@ public class Utilities {
 		return num;
 	}
 
-	public static int leerInt(int x, int y,String mensaje){
+    /**
+     *
+     * @param x
+     * @param y
+     * @param mensaje
+     * @return
+     */
+    public static int leerInt(int x, int y,String mensaje){
 		int num;
 		boolean error;
 		System.out.println(mensaje);
@@ -244,7 +308,11 @@ public class Utilities {
 		return num;
 	}
 
-	public static float leerFloat(){
+    /**
+     *
+     * @return
+     */
+    public static float leerFloat(){
 		float num=0;
 		boolean error;
 		do{
@@ -260,7 +328,12 @@ public class Utilities {
 		return num;
 	}
 
-	public static float leerFloat(String mensaje){
+    /**
+     *
+     * @param mensaje
+     * @return
+     */
+    public static float leerFloat(String mensaje){
 		float num=0;
 		boolean ok=true;
 		System.out.println(mensaje);
@@ -278,7 +351,13 @@ public class Utilities {
 		return num;
 	}
 
-	public static float leerFloat(float x, float y){
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static float leerFloat(float x, float y){
 		float num;
 		boolean error;
 		do{
@@ -300,7 +379,13 @@ public class Utilities {
 		return num;
 	}
 	
-	public static double leerDouble(double x, double y) {
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static double leerDouble(double x, double y) {
 		double num = 0;
 		boolean ok;
 		do {
@@ -322,7 +407,11 @@ public class Utilities {
 		return num;
 	}
 
-	public static double leerDouble() {
+    /**
+     *
+     * @return
+     */
+    public static double leerDouble() {
 		double fNumero = 0;
 		boolean ok;
 		do {
@@ -336,7 +425,12 @@ public class Utilities {
 		} while (!ok);
 		return fNumero;
 	}
-        public static long leerLong() {
+
+    /**
+     *
+     * @return
+     */
+    public static long leerLong() {
 		long fNumero = 0;
 		boolean ok;
 		do {
@@ -351,7 +445,11 @@ public class Utilities {
 		return fNumero;
 	}
 	
-	public static boolean esBoolean(){
+    /**
+     *
+     * @return
+     */
+    public static boolean esBoolean(){
 		String respu;
 		do{
 			respu=introducirCadena().toLowerCase();
@@ -364,7 +462,12 @@ public class Utilities {
 		}
 	}
 
-	public static boolean esBoolean(String mensaje){
+    /**
+     *
+     * @param mensaje
+     * @return
+     */
+    public static boolean esBoolean(String mensaje){
 		String respu;
 		do{
 			respu=introducirCadena(mensaje).toLowerCase();
@@ -377,7 +480,11 @@ public class Utilities {
 		}
 	}
 
-	public static LocalDate leerFecha() {
+    /**
+     *
+     * @return
+     */
+    public static LocalDate leerFecha() {
 		String fechaAux;
 		LocalDate fecha = LocalDate.now();
 		boolean error;
@@ -395,7 +502,12 @@ public class Utilities {
 		return fecha;
 	}
 
-	public static LocalDate leerFecha(String mensaje) {
+    /**
+     *
+     * @param mensaje
+     * @return
+     */
+    public static LocalDate leerFecha(String mensaje) {
 		String fechaAux;
 		LocalDate fechaNac = LocalDate.now();
 		boolean error;
@@ -414,7 +526,12 @@ public class Utilities {
 		return fechaNac;
 	}
 
-	public static String fechaToString(LocalDate fecha) {
+    /**
+     *
+     * @param fecha
+     * @return
+     */
+    public static String fechaToString(LocalDate fecha) {
 		DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String wfecha;
 		
@@ -424,6 +541,12 @@ public class Utilities {
 	}
 	
 	//Devuelve el n�mero de objetos de un fichero
+
+    /**
+     *
+     * @param fich
+     * @return
+     */
 	 public static int calculoFichero(File fich){
 	 	int cont=0;
 	 	if (fich.exists()){

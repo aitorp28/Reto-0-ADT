@@ -14,14 +14,14 @@ import utilities.Utilities;
 
 /**
  *
- * @author 2dam
+ * @author Jaime
  */
 public class Movement implements Serializable{
     private long id;
     private double amount;
     private double balance;
     private String description;
-    private LocalDate timeStamp;
+    private Timestamp timeStamp;
     private long account_id;
 
     /**
@@ -83,14 +83,14 @@ public class Movement implements Serializable{
     /**
      * @return the timeStamp
      */
-    public LocalDate getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
     /**
      * @param timeStamp the timeStamp to set
      */
-    public void setTimeStamp(LocalDate timeStamp) {
+    public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -108,12 +108,16 @@ public class Movement implements Serializable{
         this.account_id = account_id;
     }
     
-    public void setData(long acc) {
+    /**
+     * Method for recording the data of a new Movement
+     * @param acc previously checked existing Account to link the Movement to
+     */
+    public void setData(long acc, double bal) {
         this.setAccount_id(acc);
-        System.out.println("Introduzca el importe inicial de la cuenta");
+        System.out.println("Introduzca el importe a mover (positivo para ingresos, negativo para retirar)");
         this.setAmount(Utilities.leerDouble());
-        this.setBalance(Utilities.leerDouble());
+        this.setBalance(bal + this.getAmount());
         System.out.println("Introduzca una descripción de la cuenta");
-        this.setDescription(Utilities.leerString(10000000));
+        this.setDescription(Utilities.leerString(100));
     }
 }

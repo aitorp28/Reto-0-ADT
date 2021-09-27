@@ -13,7 +13,7 @@ import utilities.Utilities;
 
 /**
  *
- * @author 2dam
+ * @author Aitor Perez
  */
 public class Account implements Serializable {
 
@@ -127,6 +127,9 @@ public class Account implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void setData() {
         System.out.println("Introduzca el importe inicial de la cuenta");
         this.setBeginBalance(Utilities.leerDouble());
@@ -142,6 +145,10 @@ public class Account implements Serializable {
         this.setBeginBalanceTimeStamp(Timestamp.from(Instant.now()));
     }
 
+    /**
+     *
+     * @return
+     */
     public static long askId() {
         long id = Utilities.leerInt("Introduzca la id del usuarios a buscar");
         return id;
