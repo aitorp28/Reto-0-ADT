@@ -1,4 +1,4 @@
-package utilidades;
+package utilities;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -327,8 +327,22 @@ public class Utilities {
 		boolean ok;
 		do {
 			try {
-				ok = true;
 				fNumero = Double.parseDouble(introducirCadena());
+				ok = true;
+			} catch (NumberFormatException e) {
+				System.out.println("Error al introducir el n?mero");
+				ok = false;
+			}
+		} while (!ok);
+		return fNumero;
+	}
+        public static long leerLong() {
+		long fNumero = 0;
+		boolean ok;
+		do {
+			try {
+				fNumero = Long.parseLong(introducirCadena());
+				ok = true;
 			} catch (NumberFormatException e) {
 				System.out.println("Error al introducir el n?mero");
 				ok = false;

@@ -5,11 +5,16 @@
  */
 package controller;
 
+import exception.*;
+import utilities.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import logical.DAO;
 import model.Account;
 import model.Customer;
@@ -19,53 +24,329 @@ import model.Movement;
  *
  * @author 2dam
  */
-public class DAOImplement implements DAO{
+public class DAOImplement implements DAO {
 
     // Atributos
-	private Connection con;
-	private PreparedStatement stmt;
-	private ConnectionOpenClose conection = new ConnectionOpenClose();
+    private Connection con;
+    private PreparedStatement stmt;
+    private ConnectionOpenClose conection = new ConnectionOpenClose();
+    private boolean exists;
+
+    // SQL Querys
+    private final String searchAccount = "SELECT * from Account WHERE id = ?";
+    private final String searchCustomer = "SELECT * from Customer WHERE id = ?";
+    private final String readAccount = "SELECT * from Account WHERE id = ?";
+    private final String createAccount = "INSERT into account (balance, beginBalance, beginBalanceTimestamp,creditLine, description, `type`) VALUES (?,?,CURRENT_TIMESTAMP,?,?,?)";
+    private final String createCustomer = "INSERT into customer (city, email, firstName, lastName, middleInitial, phone, state, street, zip) VALUES (?,?,?,?,?,?,?,?,?)";
+    private final String linkAccountCustomer = "INSER into customer_account (?,?)";
+    private final String listAccount = "SELECT account.* FROM account,customer_account WHERE Account.id = customer_account.accounts_id AND customer_account.customers_id = ?";
+
+    // Crear Cliente
+    @Override
+    public void createCustomer() {
+        Customer cust = new Customer();
+
+    }
     
+    // Consultar Datos Cliente
     @Override
-    public List<Account> searchAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Customer searchCustomer() {
+        Customer cus = null;
+        int id = Utilities.leerInt("Introduzca el id de la cuenta a buscar");
+        ResultSet rs = null;
+        try {
+            con = conection.openConnection();
+        } catch (ConnectException ex) {
+            new ConnectException("Error al Leer");
+        }
+        try {
+            stmt = con.prepareStatement(searchCustomer);
+            stmt.setInt(1, id);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                cus = new Customer();
+                cus.setId(rs.getLong("id"));
+                cus.setCity(rs.getString("city"));
+                cus.setEmail(rs.getString("email"));
+                cus.setFirstName(rs.getString("firstname"));
+                cus.setLastName(rs.getString("lastname"));
+                cus.setMiddleInitial(rs.getString("middelinitial"));
+                cus.setPhone(rs.getInt("phone"));
+                cus.setState(rs.getString("state"));
+                cus.setStreet(rs.getString("street"));
+                cus.setZip(rs.getInt("zip"));
+            }
+        } catch (Exception e) {
+            new ReadException("Error al Leer");
+        }
+        try {
+            conection.closeConnection(stmt, con);
+        } catch (ConnectException e) {
+            new ConnectException(e.getMessage());
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (Exception e) {
+                new ReadException("Error al Leer");
+            }
+        }
+        return cus;
+    }
+    
+    // Listar cuentas de Cliente
+    @Override
+    public Collection<Account> listAccount() {
+        Collection<Account> accounts = new TreeSet<>(Collections.emptySortedSet());
+        Account acc;
+        int id = Utilities.leerInt("Introduzca la id del usuarios a buscar");
+        ResultSet rs = null;
+        try {
+            con = conection.openConnection();
+        } catch (ConnectException ex) {
+            new ConnectException("Error al Leer");
+        }
+        try {
+            stmt = con.prepareStatement(listAccount);
+            stmt.setInt(1, id);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                acc = new Account();
+                acc.setId(rs.getLong("account.id"));
+                acc.setBalance(rs.getDouble("account.balance"));
+                acc.setBeginBalance(rs.getDouble("account.beginBalance"));
+                acc.setBeginBalanceTimeStamp(rs.getTimestamp("account.beginBalanceTimestamp"));
+                acc.setCreditLine(rs.getDouble("account.creditLibne"));
+                acc.setDescription(rs.getString("account.description"));
+                acc.setType(rs.getInt("account.type"));
+                accounts.add(acc);
+            }
+        } catch (Exception e) {
+            new ReadException("Error al Leer");
+        }
+        try {
+            conection.closeConnection(stmt, con);
+        } catch (ConnectException e) {
+            new ConnectException(e.getMessage());
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (Exception e) {
+                new ReadException("Error al Leer");
+            }
+        }
+        return accounts;
+
+    }
+    
+    // Crear Cuenta para Cliente
+    @Override
+    public void createAccount() throws ConnectException, CreateException {
+        exists = true;
+        long clie;
+        System.out.println("Introduzca el id del Cliente");
+        clie = Utilities.leerLong();
+        try {
+            if (existingCustomer(clie)) {
+                Account acc = new Account();
+                acc.setData();
+                
+                try {
+                    con = conection.openConnection();
+                } catch (ConnectException ex) {
+                }
+                
+                try {
+                    stmt = con.prepareStatement(createAccount);
+                    stmt.setLong(1, acc.getId());
+                    stmt.setDouble(2, acc.getBalance());
+                    stmt.setDouble(3, acc.getBeginBalance());
+                    stmt.setTimestamp(4, acc.getBeginBalanceTimeStamp());
+                    stmt.setDouble(5, acc.getCreditLine());
+                    stmt.setString(5, acc.getDescription());
+                    stmt.setInt(5, acc.getType());  
+                    stmt.executeUpdate();
+                } catch (Exception e) {
+                    throw new CreateException("Error al Crear");
+                }
+                try {
+                    conection.closeConnection(stmt, con);
+                } catch (ConnectException e) {
+                    throw new ConnectException(e.getMessage());
+                }
+                
+            }
+        } catch (ReadException ex) {
+            Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    @Override
-    public void createAccount() {
-        Account acc = new Account();
-        acc.create();
-    }
+    
 
+    // Añadir Clientes a Cuentas
     @Override
     public void addCustomerToAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    // Consultar Datos de una Cuenta
     @Override
     public Account readAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Account acc = null;
+        int id = Utilities.leerInt("Introduzca el id de la cuenta a buscar");
+        ResultSet rs = null;
+        try {
+            con = conection.openConnection();
+        } catch (ConnectException ex) {
+            new ConnectException("Error al Leer");
+        }
+        try {
+            stmt = con.prepareStatement(readAccount);
+            stmt.setInt(1, id);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                acc = new Account();
+                acc.setId(rs.getLong("account.id"));
+                acc.setBalance(rs.getDouble("account.balance"));
+                acc.setBeginBalance(rs.getDouble("account.beginBalance"));
+                acc.setBeginBalanceTimeStamp(rs.getTimestamp("account.beginBalanceTimestamp"));
+                acc.setCreditLine(rs.getDouble("account.creditLibne"));
+                acc.setDescription(rs.getString("account.description"));
+                acc.setType(rs.getInt("account.type"));
+            }
+        } catch (Exception e) {
+            new ReadException("Error al Leer");
+        }
+        try {
+            conection.closeConnection(stmt, con);
+        } catch (ConnectException e) {
+            new ConnectException(e.getMessage());
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (Exception e) {
+                new ReadException("Error al Leer");
+            }
+        }
+        return acc;
     }
 
-    @Override
-    public void createCustomer() {
-        Customer cust = new Customer();
-        
-    }
-
-    @Override
-    public Customer searchCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    // Añadir Movimiento
     @Override
     public void newMovement() {
+        long acc;
+        System.out.println("Introduzca el importe inicial de la cuenta");
+        acc = Utilities.leerLong();
+        try {
+            if (existingAccount(acc)) {
+                Movement mov = new Movement();
+                mov.setData(acc);
+            }
+        } catch (ConnectException ex) {
+            Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ReadException ex) {
+            Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    // Consultar Datos Movimiento
+    @Override
+    public Collection<Movement> searchMovement() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public List<Movement> searchMovement() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    // Métodos Adicionales de comprobaciones
     
+    /**
+     *
+     * @param num Generated randomlly number for new Account ID
+     * @return Returns a boolean indicating the existence of an account with the
+     * provided number to avoid duplicates
+     * @throws ConnectException
+     * @throws ReadException
+     */
+    public boolean existingAccount(long num) throws ConnectException, ReadException {
+        ResultSet rs = null;
+        exists = false;
+        String id = String.valueOf(num);
+        try {
+            con = conection.openConnection();
+        } catch (ConnectException e) {
+            throw new ConnectException(e.getMessage());
+        }
+
+        try {
+            stmt = con.prepareStatement(searchAccount);
+            stmt.setString(1, id);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                exists = true;
+            }
+        } catch (Exception e) {
+            throw new ReadException("Error al Leer");
+        }
+        try {
+            conection.closeConnection(stmt, con);
+        } catch (ConnectException e) {
+            throw new ConnectException(e.getMessage());
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (Exception e) {
+                throw new ReadException("Error al Leer");
+            }
+        }
+        return exists;
+    }
+
+    /**
+     *
+     * @param num asked number for Customer ID
+     * @return Returns a boolean indicating the existence of a customer with the
+     * provided number to enable Account Creation
+     * @throws ConnectException
+     * @throws ReadException
+     */
+    private boolean existingCustomer(long num) throws ConnectException, ReadException {
+        ResultSet rs = null;
+        exists = false;
+        try {
+            con = conection.openConnection();
+        } catch (ConnectException e) {
+            throw new ConnectException(e.getMessage());
+        }
+
+        try {
+            stmt = con.prepareStatement(searchCustomer);
+            stmt.setLong(1, num);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                exists = true;
+            }
+        } catch (Exception e) {
+            throw new ReadException("Error al Leer");
+        }
+        try {
+            conection.closeConnection(stmt, con);
+        } catch (ConnectException e) {
+            throw new ConnectException(e.getMessage());
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (Exception e) {
+                throw new ReadException("Error al Leer");
+            }
+        }
+        return exists;
+    }
+
 }

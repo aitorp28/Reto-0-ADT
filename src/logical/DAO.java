@@ -5,7 +5,8 @@
  */
 package logical;
 
-import java.util.List;
+import exception.*;
+import java.util.Collection;
 import model.Account;
 import model.Customer;
 import model.Movement;
@@ -16,14 +17,14 @@ import model.Movement;
  */
 public interface DAO {
     // SQL Related to Account
-    public List <Account> searchAccount();
-    public void createAccount();
+    public Collection <Account> listAccount(); //
+    public void createAccount() throws ConnectException, CreateException ;
     public void addCustomerToAccount();
-    public Account readAccount();
+    public Account readAccount(); //
     // SQL Related to Customer
     public void createCustomer();
-    public Customer searchCustomer();
+    public Customer searchCustomer(); //
     // SQL Related to Movement
     public void newMovement();
-    public List <Movement> searchMovement();
+    public Collection <Movement> searchMovement();
 }

@@ -5,32 +5,37 @@
  */
 package model;
 
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.concurrent.ThreadLocalRandom;
+import utilities.Utilities;
 
 /**
  *
  * @author 2dam
  */
-public class Account {
-    private int id;
+public class Account implements Serializable{
+
+    private long id;
     private double balance;
     private double beginBalance;
-    private LocalDate beginBalanceTimeStamp;
+    private Timestamp beginBalanceTimeStamp;
     private double creditLine;
     private String description;
-    private int type;
+    private AccountType type;
 
     /**
      * @return the id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -65,14 +70,14 @@ public class Account {
     /**
      * @return the beginBalanceTimeStamp
      */
-    public LocalDate getBeginBalanceTimeStamp() {
+    public Timestamp getBeginBalanceTimeStamp() {
         return beginBalanceTimeStamp;
     }
 
     /**
      * @param beginBalanceTimeStamp the beginBalanceTimeStamp to set
      */
-    public void setBeginBalanceTimeStamp(LocalDate beginBalanceTimeStamp) {
+    public void setBeginBalanceTimeStamp(Timestamp beginBalanceTimeStamp) {
         this.beginBalanceTimeStamp = beginBalanceTimeStamp;
     }
 
@@ -108,24 +113,34 @@ public class Account {
      * @return the type
      */
     public int getType() {
-        return type;
+        return this.type.ordinal();
     }
 
     /**
      * @param type the type to set
      */
     public void setType(int type) {
-        this.type = type;
+        if (type == 0)
+        {
+            this.type = AccountType.STANDARD;
+        } else {
+            this.type = AccountType.CREDIT;
+        }
     }
 
-    public void create() {
-        this.setBeginBalance(0);
+    public void setData() { 
+        System.out.println("Introduzca el importe inicial de la cuenta");
+        this.setBeginBalance(Utilities.leerDouble());
         this.setBalance(this.getBeginBalance());
-        this.setCreditLine(0);
-        this.setDescription("");
-        this.setType(0);
-        this.setBeginBalanceTimeStamp(LocalDate.now());
+        System.out.println("Introduzca el crédito de la cuenta de la cuenta");
+        this.setCreditLine(Utilities.leerDouble());
+        System.out.println("Introduzca una descripción de la cuenta");
+        this.setDescription(Utilities.leerString(10000000));
+        System.out.println("Indique el tipo de la cuenta:\n"
+                + "0 - Débito\n"
+                + "1 - Crédito");
+        this.setType(Utilities.leerInt(0, 1));
+        this.setBeginBalanceTimeStamp(Timestamp.from(Instant.now()));
     }
-    
-    
+
 }
