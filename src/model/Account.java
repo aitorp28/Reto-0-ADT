@@ -15,7 +15,7 @@ import utilities.Utilities;
  *
  * @author 2dam
  */
-public class Account implements Serializable{
+public class Account implements Serializable {
 
     private long id;
     private double balance;
@@ -120,15 +120,14 @@ public class Account implements Serializable{
      * @param type the type to set
      */
     public void setType(int type) {
-        if (type == 0)
-        {
+        if (type == 0) {
             this.type = AccountType.STANDARD;
         } else {
             this.type = AccountType.CREDIT;
         }
     }
 
-    public void setData() { 
+    public void setData() {
         System.out.println("Introduzca el importe inicial de la cuenta");
         this.setBeginBalance(Utilities.leerDouble());
         this.setBalance(this.getBeginBalance());
@@ -141,6 +140,11 @@ public class Account implements Serializable{
                 + "1 - Crédito");
         this.setType(Utilities.leerInt(0, 1));
         this.setBeginBalanceTimeStamp(Timestamp.from(Instant.now()));
+    }
+
+    public static long askId() {
+        long id = Utilities.leerInt("Introduzca la id del usuarios a buscar");
+        return id;
     }
 
 }

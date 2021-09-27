@@ -6,12 +6,14 @@
 package model;
 
 import java.io.Serializable;
+import utilities.Utilities;
 
 /**
  *
  * @author 2dam
  */
-public class Customer implements Serializable{
+public class Customer implements Serializable {
+
     private long id;
     private String city;
     private String email;
@@ -165,5 +167,10 @@ public class Customer implements Serializable{
 
     public void setData() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public static long askId() {
+        long id = Utilities.leerInt("Introduzca el id de la cuenta a buscar");
+        return id;
     }
 }
