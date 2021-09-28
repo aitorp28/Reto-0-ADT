@@ -15,7 +15,7 @@ import model.Movement;
 
 /**
  * Control and link of the different levels of the application
- * @author Jaime
+ * @author Jaime San Sebastián
  */
 public class Controller {
 

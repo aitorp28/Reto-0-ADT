@@ -13,8 +13,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import utilities.Utilities;
 
 /**
- *
- * @author Jaime
+ * The Class that represents the values from the Movement table on the DDBB
+ * @author Jaime San Sebastián
  */
 public class Movement implements Serializable{
     private long id;

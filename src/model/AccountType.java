@@ -8,18 +8,18 @@ package model;
 import java.io.Serializable;
 
 /**
- *
- * @author Aitpr Perez
+ * Enumeration for the AccountType field on the Account Class
+ * @author Aitor Perez
  */
 public enum AccountType implements Serializable{
 
     /**
-     *
+     * Enumeration option 0
      */
     STANDARD,
 
     /**
-     *
+     * Enumeration option 1
      */
     CREDIT;
 }

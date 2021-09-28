@@ -10,12 +10,14 @@ import model.*;
 
 /**
  * Class designed to control the traffic of information between program and user
+ *
  * @author Aitor Pérez
  */
 public class ConsoleView implements View {
 
     /**
      * Method to show the options to the user
+     *
      * @return the input from the client to the controller
      */
     @Override
@@ -35,50 +37,75 @@ public class ConsoleView implements View {
 
     /**
      * Method to show the data of a Customer
-     * @param cust received from the model, is the complete personal information of the Customer (no Accounts data)
+     *
+     * @param cust received from the model, is the complete personal information
+     * of the Customer (no Accounts data)
      */
     @Override
     public void searchCustomer(Customer cust) {
-        System.out.println(cust.toString());
+        if (cust != null) {
+            System.out.println(cust.toString());
+        } else {
+            System.out.println("No se ha encontrado ningún Customer con esa ID");
+        }
     }
 
     /**
      * Method to show the Accounts linked to a Customer
-     * @param accounts received from the model, is the set of Accounts linked to the desired Customer
+     *
+     * @param accounts received from the model, is the set of Accounts linked to
+     * the desired Customer
      */
     @Override
     public void listAccount(Collection<Account> accounts) {
-        for (Account account : accounts) {
-             System.out.println(account.toString());
+        if (!accounts.isEmpty()) {
+            for (Account account : accounts) {
+                System.out.println(account.toString());
+            }
+        } else {
+            System.out.println("No se ha encontrado ninguna Account para ese Customer ID");
         }
     }
 
     /**
      * Method to show the data of an Account
-     * @param acc received from the model, is the complete information of the Account
+     *
+     * @param acc received from the model, is the complete information of the
+     * Account
      */
     @Override
     public void readAccount(Account acc) {
-         System.out.println(acc.toString());
+        if (acc != null) {
+            System.out.println(acc.toString());
+        } else {
+            System.out.println("No se ha encontrado ninguna Account con esa ID");
+        }
     }
 
     /**
      * Method to show the Movements linked to an Account
-     * @param move received from the model, is the set of Movements linked to the desired Account
+     *
+     * @param move received from the model, is the set of Movements linked to
+     * the desired Account
      */
     @Override
     public void listMovement(Collection<Movement> move) {
-        for (Movement movement : move) {
-             System.out.println(movement.toString());
+        if (!move.isEmpty()) {
+            for (Movement movement : move) {
+                System.out.println(movement.toString());
+            }
+        } else {
+            System.out.println("No se ha encontrado ningún Movement para esa Account ID");
         }
     }
 
     /**
      * Auxiliar method to display information messages and ask for inputs
+     *
      * @param message
      */
     @Override
     public void message(String message) {
-         System.out.println(message);
+        System.out.println(message);
     }
 }

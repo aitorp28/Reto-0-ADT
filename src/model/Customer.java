@@ -9,8 +9,9 @@ import java.io.Serializable;
 import utilities.Utilities;
 
 /**
+ * The Class that represents the values from the Customer table on the DDBB
  *
- * @author Jaime
+ * @author Jaime San Sebastián
  */
 public class Customer implements Serializable {
 
@@ -166,15 +167,17 @@ public class Customer implements Serializable {
     }
 
     /**
-     *
+     * Method designet to create a new Customer in the local storage previous to
+     * save it on the DDBB
      */
     public void setData() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
+     * Method designed to ask a Customer ID
      *
-     * @return
+     * @return the id
      */
     public static long askId() {
         long id = Utilities.leerInt("Introduzca el id de la cuenta a buscar");

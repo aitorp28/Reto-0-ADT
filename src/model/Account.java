@@ -8,11 +8,10 @@ package model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.concurrent.ThreadLocalRandom;
 import utilities.Utilities;
 
 /**
- *
+ * The Class that represents the values from the Account table on the DDBB
  * @author Aitor Perez
  */
 public class Account implements Serializable {
@@ -128,7 +127,8 @@ public class Account implements Serializable {
     }
 
     /**
-     *
+     * Method designet to create a new Account in the local storage previous to
+     * save it on the DDBB
      */
     public void setData() {
         System.out.println("Introduzca el importe inicial de la cuenta");
@@ -146,8 +146,9 @@ public class Account implements Serializable {
     }
 
     /**
+     * Method designed to ask an Accounts ID
      *
-     * @return
+     * @return the id
      */
     public static long askId() {
         long id = Utilities.leerInt("Introduzca la id del usuarios a buscar");

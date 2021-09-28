@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 import exception.*;
 
 /**
- *
+ * Method designed to control the connection with the DDBB
  * @author Andoni Alday
  */
 public class ConnectionOpenClose {
@@ -18,7 +18,7 @@ public class ConnectionOpenClose {
 	private String url, user,  pass;
 	
     /**
-     *
+     * Method for connecting with the DDBB
      */
     public ConnectionOpenClose() {
 		configFile = ResourceBundle.getBundle("modelo.config");
@@ -28,9 +28,9 @@ public class ConnectionOpenClose {
 	}
 
     /**
-     *
-     * @return
-     * @throws ConnectException
+     * Method for connecting with the DDBB
+     * @return the connection object for use by other methods
+     * @throws ConnectException if the connection fails
      */
     public Connection openConnection() throws ConnectException {
 
@@ -45,10 +45,10 @@ public class ConnectionOpenClose {
 	}
 
     /**
-     *
-     * @param stmt
-     * @param con
-     * @throws ConnectException
+     * Methor designed for disconnecting from the DDBB
+     * @param stmt the last used SQL sequence
+     * @param con the previously established connection 
+     * @throws ConnectException if the disconnection fails
      */
     public void closeConnection(PreparedStatement stmt, Connection con) throws ConnectException {
 

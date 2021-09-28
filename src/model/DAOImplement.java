@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -134,7 +133,7 @@ public class DAOImplement implements DAO {
 
     // Listar cuentas de Cliente
     /**
-     * Method to list the Accounts from a Customer from the DDBB
+     * Method to list the Accounts of a Customer from the DDBB
      *
      * @return Collection of desired accounts
      */
@@ -258,7 +257,45 @@ public class DAOImplement implements DAO {
      */
     @Override
     public void addCustomerToAccount() throws ConnectException, CreateException {
-        
+        boolean exisC = false;
+        boolean exisA = false;
+        ResultSet rs = null;
+        long cus = 0, acc = 0;
+        while (!exisC) {
+        cus = Customer.askId();
+            try {
+                exisC = existingCustomer(cus);
+            } catch (ReadException ex) {
+                Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        while (!exisA) {
+        acc = Account.askId();
+            try {
+                exisA = existingAccount(acc);
+            } catch (ReadException ex) {
+                Logger.getLogger(DAOImplement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        try {
+                con = conection.openConnection();
+            } catch (ConnectException ex) {
+                throw new ConnectException(ex.getMessage());
+            }
+
+            try {
+                stmt = con.prepareStatement(linkAccountCustomer);
+                stmt.setLong(1, cus);
+                stmt.setLong(2, acc);
+                stmt.executeUpdate();
+            } catch (Exception e) {
+                throw new CreateException("Error al Crear la Cuenta");
+            }
+            try {
+                conection.closeConnection(stmt, con);
+            } catch (ConnectException e) {
+                throw new ConnectException(e.getMessage());
+            }    
     }
 
     // Consultar Datos de una Cuenta
@@ -388,7 +425,7 @@ public class DAOImplement implements DAO {
     // PENDIENTE
     // Consultar Datos Movimiento
     /**
-     * Method to list the Movements of a expecified account
+     * Method to list the Movements of an expecifiedAccount
      *
      * @return collection of movements
      * @throws ConnectException if cannot connect to the DDBB
@@ -397,9 +434,9 @@ public class DAOImplement implements DAO {
     @Override
     public Collection<Movement> listMovement() throws ReadException, ConnectException {
         Collection<Movement> movs = new TreeSet<>();
-        long num = Account.askId();
+        long acc = Account.askId();
         Movement mov = null;
-        if (existingAccount(num)) {
+        if (existingAccount(acc)) {
             ResultSet rs = null;
         try {
             con = conection.openConnection();
@@ -408,7 +445,7 @@ public class DAOImplement implements DAO {
         }
         try {
             stmt = con.prepareStatement(listMovement);
-            stmt.setLong(1, num);
+            stmt.setLong(1, acc);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 mov = new Movement();
@@ -417,7 +454,7 @@ public class DAOImplement implements DAO {
                 mov.setBalance(rs.getDouble("balance"));
                 mov.setTimeStamp(rs.getTimestamp("timestamp"));
                 mov.setDescription(rs.getString("description"));
-                mov.setAccount_id(num);
+                mov.setAccount_id(acc);
                 movs.add(mov);
             }
         } catch (Exception e) {

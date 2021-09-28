@@ -24,7 +24,7 @@ public class Application {
      * @throws exception.ConnectException
      * @throws exception.CreateException
      */
-    public static void main(String[] args) throws ReadException, ConnectException, CreateException {
+    public static void main(String[] args) throws ReadException, ConnectException, CreateException, UpdateException {
         // TODO code application logic here
         DAO dao = new DAOImplement();
         View view = new ConsoleView();
