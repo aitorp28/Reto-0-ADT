@@ -6,7 +6,6 @@
 package model;
 
 import java.io.Serializable;
-import utilities.Utilities;
 
 /**
  * The Class that represents the values from the Customer table on the DDBB
@@ -166,34 +165,4 @@ public class Customer implements Serializable {
         this.zip = zip;
     }
 
-    /**
-     * Method designet to create a new Customer in the local storage previous to
-     * save it on the DDBB
-     */
-    public void setData() {
-        this.city = Utilities.leerString("Introduzca la ciudad del Customer");
-        this.email = Utilities.leerString("Introduzca el email del Customer");
-        this.firstName = Utilities.leerString("Introduzca el nombre del Customer");
-        this.lastName = Utilities.leerString("Introduzca el Apellido del Customer");
-        this.middleInitial = Utilities.leerString("Introduzca posibles iniciales del Customer");
-        this.phone = Utilities.leerLong("Introduzca el teléfono del Customer");
-        this.state = Utilities.leerString("Introduzca el estado/provincia donde vive del Customer");
-        this.street = Utilities.leerString("Introduzca el país del Customer");
-        this.zip = Utilities.leerInt("Introduzca el Código Postal del Customer");
-    }
-
-    /**
-     * Method designed to ask a Customer ID
-     *
-     * @return the id
-     */
-    public static long askId() {
-        long id = Utilities.leerLong("Introduzca el id del Customer a buscar");
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" + "id=" + id + ", city=" + city + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", phone=" + phone + ", state=" + state + ", street=" + street + ", zip=" + zip + '}';
-    }
 }

@@ -5,8 +5,11 @@
  */
 package view;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Collection;
 import model.*;
+import utilities.Utilities;
 
 /**
  * Class designed to control the traffic of information between program and user
@@ -33,6 +36,17 @@ public class ConsoleView implements View {
                 + "8.- Consultar movimientos de una cuenta.\n"
                 + "9.- SALIR");
         return opc;
+    }
+
+    /**
+     * Method to ask to the user the Customer Data
+     *
+     * @return the Customer ready to record in in the DDBB
+     */
+    @Override
+    public Customer createCustomer() {
+        Customer cust = setCustomerData();
+        return cust;
     }
 
     /**
@@ -68,6 +82,17 @@ public class ConsoleView implements View {
     }
 
     /**
+     * Method to ask to the user the Customer Data
+     *
+     * @return the Customer ready to record in in the DDBB
+     */
+    @Override
+    public Account createAccount() {
+        Account acc = setAccountData();
+        return acc;
+    }
+
+    /**
      * Method to show the data of an Account
      *
      * @param acc received from the model, is the complete information of the
@@ -92,11 +117,90 @@ public class ConsoleView implements View {
     public void listMovement(Collection<Movement> move) {
         if (!move.isEmpty()) {
             for (Movement movement : move) {
-                System.out.println(movement.toString());
+                movement.toString();
             }
         } else {
             System.out.println("No se ha encontrado ningún Movement para esa Account ID");
         }
+    }
+
+     /**
+     * Method to ask the user for the Movement Data
+     * @param acc the account the Movement will be linked to
+     * @return a Movement ready to record it on the DDB
+     */
+    @Override
+    public Movement createMovement(Account acc) {
+        long id = acc.getId();
+        double bal = acc.getBalance();
+        Movement mov = setMovementData(id, bal);
+        return mov;
+    }
+
+    // METODOS DE INTERACCIÓN CON OBJETOS DEL MODELO
+    /**
+     * Method designet to create a new Customer in the local storage previous to
+     * save it on the DDBB
+     *
+     * @return the Customer ready to be recorded
+     */
+    public Customer setCustomerData() {
+        Customer cust = new Customer();
+        cust.setCity(Utilities.leerString("Introduzca la ciudad del Customer"));
+        cust.setEmail(Utilities.leerString("Introduzca el email del Customer"));
+        cust.setFirstName(Utilities.leerString("Introduzca el nombre del Customer"));
+        cust.setLastName(Utilities.leerString("Introduzca el Apellido del Customer"));
+        cust.setMiddleInitial(Utilities.leerString("Introduzca posibles iniciales del Customer"));
+        cust.setPhone(Utilities.leerLong("Introduzca el teléfono del Customer"));
+        cust.setState(Utilities.leerString("Introduzca el estado/provincia donde vive del Customer"));
+        cust.setStreet(Utilities.leerString("Introduzca el país del Customer"));
+        cust.setZip(Utilities.leerInt("Introduzca el Código Postal del Customer"));
+        return cust;
+    }
+
+    /**
+     * Method designet to create a new Account in the local storage previous to
+     * save it on the DDBB
+     * @return the Account ready to be recorded
+     */
+    public Account setAccountData() {
+        Account acc = new Account();
+        acc.setBeginBalance(Utilities.leerDouble("Introduzca el importe inicial de la cuenta"));
+        acc.setBalance(acc.getBeginBalance());
+        acc.setCreditLine(Utilities.leerDouble("Introduzca el crédito de la cuenta de la cuenta"));
+        acc.setDescription(Utilities.leerString("Introduzca una descripción de la cuenta"));
+        acc.setType(Utilities.leerInt(0, 1, "Indique el tipo de la cuenta:\n"
+                + "0 - STANDARD\n"
+                + "1 - CREDIT"));
+        acc.setBeginBalanceTimeStamp(Timestamp.from(Instant.now()));
+        return acc;
+    }
+    
+    /**
+     * Method for recording the data of a new Movement
+     *
+     * @param acc previously checked existing Account to link the Movement to
+     * @param bal actual balance of the Account the Movement will be linked to
+     * @return the Movement ready to be recorded
+     */
+    public Movement setMovementData(long acc, double bal) {
+        Movement mov = new Movement();
+        mov.setAccount_id(acc);
+        mov.setAmount(Utilities.leerDouble("Introduzca el importe a mover (positivo para ingresos, negativo para retirar)"));
+        mov.setBalance(bal + mov.getAmount());
+        mov.setDescription(Utilities.leerString("Introduzca una breve descripción de la cuenta"));
+        return mov;
+    }
+
+    /**
+     * Auxiliar Method to ask the  user an ID
+     * @param mensaje displayed to the user to know the type of ID asked
+     * @return the ID given by the user
+     */
+    @Override
+    public long askId(String mensaje) {
+        long str = Utilities.leerLong(mensaje);
+        return str;
     }
 
     /**
@@ -108,4 +212,5 @@ public class ConsoleView implements View {
     public void message(String message) {
         System.out.println(message);
     }
+    
 }

@@ -7,7 +7,6 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import utilities.Utilities;
 
 /**
  * The Class that represents the values from the Movement table on the DDBB
@@ -107,22 +106,4 @@ public class Movement implements Serializable {
         this.account_id = account_id;
     }
 
-    /**
-     * Method for recording the data of a new Movement
-     *
-     * @param acc previously checked existing Account to link the Movement to
-     */
-    public void setData(long acc, double bal) {
-        this.setAccount_id(acc);
-        System.out.println("Introduzca el importe a mover (positivo para ingresos, negativo para retirar)");
-        this.setAmount(Utilities.leerDouble());
-        this.setBalance(bal + this.getAmount());
-        System.out.println("Introduzca una descripción de la cuenta");
-        this.setDescription(Utilities.leerString(100));
-    }
-
-    @Override
-    public String toString() {
-        return "Movement{" + "id=" + id + ", amount=" + amount + ", balance=" + balance + ", description=" + description + ", timeStamp=" + timeStamp + ", account_id=" + account_id + '}';
-    }
 }

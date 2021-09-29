@@ -428,6 +428,7 @@ public class Utilities {
 
     /**
      *
+     * @param mensaje
      * @return
      */
     public static double leerDouble(String mensaje) {
@@ -467,6 +468,7 @@ public class Utilities {
     
     /**
      *
+     * @param mensaje
      * @return
      */
     public static long leerLong(String mensaje) {

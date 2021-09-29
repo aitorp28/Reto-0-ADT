@@ -19,13 +19,14 @@ import view.ConsoleView;
 public class Application {
 
     /**
+     * Launch point of the Application
      * @param args the command line arguments
      * @throws exception.ReadException
      * @throws exception.ConnectException
      * @throws exception.CreateException
+     * @throws exception.UpdateException
      */
     public static void main(String[] args) throws ReadException, ConnectException, CreateException, UpdateException {
-        // TODO code application logic here
         DAO dao = new DAOImplement();
         View view = new ConsoleView();
         Controller control = new Controller();

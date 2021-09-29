@@ -18,11 +18,17 @@ public interface View {
 
     /**
      * Method to show the options to the user
-     * @return
+     * @return the option selected by the user
      */
     public int menu();
-    // SQL Method Return
-
+    
+    
+    /**
+     * Method to ask the user for the Customer Data
+     * @return a Customer ready to record it on the DDB
+     */
+    public Customer createCustomer();
+    
     /**
      * Method to show the data of a Customer
      *
@@ -38,6 +44,12 @@ public interface View {
      * the desired Customer
      */
     public void listAccount(Collection<Account> accounts);
+    
+    /**
+     * Method to ask the user for the Account Data
+     * @return an Account ready to record it on the DDB
+     */
+    public Account createAccount();
 
     /**
      * Method to show the data of an Account
@@ -47,6 +59,13 @@ public interface View {
      */
     public void readAccount(Account acc);
 
+    /**
+     * Method to ask the user for the Movement Data
+     * @param acc the account the Movement will be linked to
+     * @return a Movement ready to record it on the DDB
+     */
+    public Movement createMovement(Account acc);
+    
     /**
      * Method to show the Movements linked to an Account
      *
@@ -59,7 +78,15 @@ public interface View {
     /**
      * Auxiliar method to display information messages and ask for inputs
      *
-     * @param message
+     * @param message to show to the user
      */
     public void message(String message);
+
+    /**
+     * Auxiliar Method to ask the  user an ID
+     * @param mensaje displayed to the user to know the type of ID asked
+     * @return the ID given by the user
+     */
+    public long askId(String mensaje);
+    
 }

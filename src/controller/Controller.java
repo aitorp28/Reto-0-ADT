@@ -7,6 +7,7 @@ package controller;
 
 import exception.*;
 import java.util.Collection;
+import java.util.TreeSet;
 import model.DAO;
 import view.View;
 import model.Account;
@@ -19,6 +20,8 @@ import model.Movement;
  */
 public class Controller {
 
+    private final String IDCustomer = "Introduzca la ID del Customer";
+    private final String IDAccount = "Introduzca la ID de la Account";
     private DAO dao;
     private View view;
     
@@ -26,9 +29,10 @@ public class Controller {
      * Method to control the flux of the application
      * @param view implementation of the desired view type
      * @param dao implementation of the desired dao type
-     * @throws ConnectException if cannot connect to the DDBB
-     * @throws CreateException if fails trying to write on the DDBB
-     * @throws ReadException if fails trying to read from the DDBB
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws CreateException if the model fails trying to write on the DDBB
+     * @throws ReadException if the model fails trying to read from the DDBB
+     * @throws UpdateException if the model fails updating data on the DDBB
      */
     public void run(View view, DAO dao) throws ReadException, ConnectException, CreateException, UpdateException {
         this.dao = dao;
@@ -41,11 +45,10 @@ public class Controller {
                     createCustomer();
                     break;
                 case 2:
-                    Customer cus = searchCustomer();
+                    searchCustomer();
                     break;
                 case 3:
-                    Collection<Account> accounts = listAccount();
-                    view.listAccount(accounts);
+                    listAccount();
                     break;
                 case 4:
                     createAccount();
@@ -54,15 +57,13 @@ public class Controller {
                     addCustomerToAccount();
                     break;
                 case 6:
-                    Account account = readAccount();
-                    view.readAccount(account);
+                    readAccount();
                     break;
                 case 7:
                     createMovement();
                     break;
                 case 8:
-                    Collection<Movement> mov = listMovement();
-                    view.listMovement(mov);
+                    listMovement();
                     break;
                 case 9:
                     view.message("Fin del Programa");
@@ -71,36 +72,105 @@ public class Controller {
         } while (opc != 9);
     }
 
-    private void createCustomer() {
-        dao.createCustomer();
+    /**
+     * Method to control the creation of a new Customer
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws CreateException  if the model fails trying to write on the DDBB
+     */
+    private void createCustomer() throws ConnectException, CreateException {
+        Customer cus = view.createCustomer();
+        dao.createCustomer(cus);
     }
 
-    private Customer searchCustomer() {
-    
-                    view.searchCustomer(cus);
+    /**
+     * Method to control the reading of data of a Customer
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws ReadException if the model fails trying to read from the DDBB
+     */
+    private void searchCustomer() throws ConnectException, ReadException {
+        long cust = view.askId(IDCustomer);
+        Customer cus = dao.searchCustomer(cust);
+        view.searchCustomer(cus);
     }
 
-    private Collection<Account> listAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Method to control the listing of the Accounts of a Customer
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws ReadException if the model fails trying to read from the DDBB 
+     */
+    private void listAccount() throws ConnectException, ReadException {
+        long id = view.askId(IDAccount);
+        Collection<Account> accounts = dao.listAccount(id);
+        view.listAccount(accounts);
     }
 
-    private void createAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Method to control the creation of a new Account
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws CreateException if the model fails trying to write on the DDBB
+     * @throws ReadException if the model fails trying to read from the DDBB 
+     */
+    private void createAccount() throws ConnectException, CreateException, ReadException {
+        long clie = view.askId(IDCustomer);
+        if (dao.existingCustomer(clie)) {
+        Account acc = view.createAccount();
+        dao.createAccount(clie, acc);
+        } else {
+            view.message("No existe ningún Customer con esa ID");
+        }
     }
 
-    private void addCustomerToAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Method to control the linking of a Customer with an Account
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws CreateException if the model fails trying to write on the DDBB
+     * @throws ReadException if the model fails trying to read from the DDBB 
+     */
+    private void addCustomerToAccount() throws ConnectException, CreateException, ReadException {
+        long cus = view.askId(IDCustomer);
+        long acc = view.askId(IDAccount);
+        if (dao.existingCustomer(cus) && dao.existingAccount(acc))
+        dao.addCustomerToAccount(cus, acc);
     }
 
-    private Account readAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Method to control the reading of data od an Account
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws ReadException if the model fails trying to read from the DDBB 
+     */
+    private void readAccount() throws ConnectException, ReadException {
+        long id = view.askId(IDAccount);
+        Account account = dao.readAccount(id);
+        view.readAccount(account);
     }
 
-    private void createMovement() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Method to control the creation of a new Movement
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws CreateException if the model fails trying to write on the DDBB
+     * @throws ReadException if the model fails trying to read from the DDBB
+     * @throws UpdateException if the model fails updating data on the DDBB
+     */
+    private void createMovement() throws ConnectException, CreateException, ReadException, UpdateException {
+        long id = view.askId(IDAccount);
+        Account acc = dao.readAccount(id);
+        if (acc != null) {
+        Movement mov = view.createMovement(acc);
+        dao.createMovement(acc, mov);
+        } else {
+            view.message("No existe ninguna Account con esa ID");
+        }
     }
 
-    private Collection<Movement> listMovement() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Method to control the listing of Movements of an Account
+     * @throws ConnectException if the model cannot connect to the DDBB
+     * @throws ReadException if the model fails trying to read from the DDBB 
+     */
+    private void listMovement() throws ConnectException, ReadException {
+        Collection<Movement> movements = new TreeSet<>();
+        long id = view.askId(IDAccount);
+        movements = dao.listMovement(id);
+        view.listMovement(movements);
     }
 }

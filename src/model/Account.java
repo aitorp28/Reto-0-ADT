@@ -7,8 +7,6 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.Instant;
-import utilities.Utilities;
 
 /**
  * The Class that represents the values from the Account table on the DDBB
@@ -126,33 +124,4 @@ public class Account implements Serializable {
         }
     }
 
-    /**
-     * Method designet to create a new Account in the local storage previous to
-     * save it on the DDBB
-     */
-    public void setData() {
-        this.setBeginBalance(Utilities.leerDouble("Introduzca el importe inicial de la cuenta"));
-        this.setBalance(this.getBeginBalance());
-        this.setCreditLine(Utilities.leerDouble("Introduzca el crédito de la cuenta de la cuenta"));
-        this.setDescription(Utilities.leerString("Introduzca una descripción de la cuenta"));
-        this.setType(Utilities.leerInt(0, 1, "Indique el tipo de la cuenta:\n"
-                + "0 - STANDARD\n"
-                + "1 - CREDIT"));
-        this.setBeginBalanceTimeStamp(Timestamp.from(Instant.now()));
-    }
-
-    /**
-     * Method designed to ask an Accounts ID
-     *
-     * @return the id
-     */
-    public static long askId() {
-        long id = Utilities.leerLong("Introduzca la id de la Account a buscar");
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" + "id=" + id + ", balance=" + balance + ", beginBalance=" + beginBalance + ", beginBalanceTimeStamp=" + beginBalanceTimeStamp + ", creditLine=" + creditLine + ", description=" + description + ", type=" + type + '}';
-    }    
 }
