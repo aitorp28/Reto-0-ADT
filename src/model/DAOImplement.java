@@ -37,7 +37,7 @@ public class DAOImplement implements DAO {
     private final String createAccount = "INSERT INTO Account (balance, beginBalance, beginBalanceTimestamp,creditLine, description, `type`) VALUES (?,?,CURRENT_TIMESTAMP,?,?,?)";
     private final String createCustomer = "INSERT INTO Customer (city, email, firstName, lastName, middleInitial, phone, state, street, zip) VALUES (?,?,?,?,?,?,?,?,?)";
     private final String createMovement = "INSERT INTO Customer (timestamp, amount, balance, description, account_id) VALUES (?,?,?,?)";
-    private final String linkAccountCustomer = "INSERT INTO customer_account (?,?)";
+    private final String linkAccountCustomer = "INSERT INTO customer_account (customers_id, accounts_id) VALUES (?,?)";
     private final String listAccount = "SELECT account.* FROM account,customer_account WHERE Account.id = customer_account.accounts_id AND customer_account.customers_id = ?";
     private final String listMovement = "SELECT * FROM movement WHERE account_id = ?";
     
@@ -64,7 +64,7 @@ public class DAOImplement implements DAO {
             stmt.setString(3, cust.getFirstName());
             stmt.setString(4, cust.getLastName());
             stmt.setString(5, cust.getMiddleInitial());
-            stmt.setInt(6, cust.getPhone());
+            stmt.setLong(6, cust.getPhone());
             stmt.setString(7, cust.getState());
             stmt.setString(8, cust.getStreet());
             stmt.setInt(9, cust.getZip());
@@ -107,8 +107,8 @@ public class DAOImplement implements DAO {
                 cus.setEmail(rs.getString("email"));
                 cus.setFirstName(rs.getString("firstname"));
                 cus.setLastName(rs.getString("lastname"));
-                cus.setMiddleInitial(rs.getString("middelinitial"));
-                cus.setPhone(rs.getInt("phone"));
+                cus.setMiddleInitial(rs.getString("middleInitial"));
+                cus.setPhone(rs.getLong("phone"));
                 cus.setState(rs.getString("state"));
                 cus.setStreet(rs.getString("street"));
                 cus.setZip(rs.getInt("zip"));
@@ -215,10 +215,9 @@ public class DAOImplement implements DAO {
                 stmt = con.prepareStatement(createAccount);
                 stmt.setDouble(1, acc.getBalance());
                 stmt.setDouble(2, acc.getBeginBalance());
-                stmt.setTimestamp(3, acc.getBeginBalanceTimeStamp());
-                stmt.setDouble(4, acc.getCreditLine());
-                stmt.setString(5, acc.getDescription());
-                stmt.setInt(6, acc.getType());
+                stmt.setDouble(3, acc.getCreditLine());
+                stmt.setString(4, acc.getDescription());
+                stmt.setInt(5, acc.getType());
                 stmt.executeUpdate();
                 if (stmt.executeUpdate() == 0) {
                     throw new CreateException("Posible error en el alta de la cuenta");
@@ -325,7 +324,7 @@ public class DAOImplement implements DAO {
                 acc.setBalance(rs.getDouble("account.balance"));
                 acc.setBeginBalance(rs.getDouble("account.beginBalance"));
                 acc.setBeginBalanceTimeStamp(rs.getTimestamp("account.beginBalanceTimestamp"));
-                acc.setCreditLine(rs.getDouble("account.creditLibne"));
+                acc.setCreditLine(rs.getDouble("account.creditLine"));
                 acc.setDescription(rs.getString("account.description"));
                 acc.setType(rs.getInt("account.type"));
             }

@@ -21,7 +21,7 @@ public class ConnectionOpenClose {
      * Method for connecting with the DDBB
      */
     public ConnectionOpenClose() {
-		configFile = ResourceBundle.getBundle("modelo.config");
+		configFile = ResourceBundle.getBundle("model.config");
 		url = configFile.getString("URL");
 		user = configFile.getString("USER");
 		pass = configFile.getString("PASSWORD");

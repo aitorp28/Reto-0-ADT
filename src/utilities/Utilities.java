@@ -13,270 +13,274 @@ import java.time.format.DateTimeParseException;
 
 /**
  * Class with multiple generic utilities to ease the reading of the main code
+ *
  * @author Andoni Alday
  */
 public class Utilities {
 
     /**
      * Method to control the input of a String
-     * @return String ready for use 
+     *
+     * @return String ready for use
      */
-    public static String introducirCadena(){
-		 String cadena="";
-		 InputStreamReader entrada =new InputStreamReader(System.in);
-		 BufferedReader teclado= new BufferedReader(entrada);
-		try {
-			cadena=teclado.readLine();
-		} catch (IOException e) {
-			System.out.println("Error en la entrada de datos");
-		}
-		 return cadena;
-	}
+    public static String introducirCadena() {
+        String cadena = "";
+        InputStreamReader entrada = new InputStreamReader(System.in);
+        BufferedReader teclado = new BufferedReader(entrada);
+        try {
+            cadena = teclado.readLine();
+        } catch (IOException e) {
+            System.out.println("Error en la entrada de datos");
+        }
+        return cadena;
+    }
 
     /**
      * Method to control the input of a String with a display message
+     *
      * @param mensaje message that displays to the user asking for an input
      * @return String ready for use
      */
-    public static String introducirCadena(String mensaje){
-		 String cadena="";
-		 InputStreamReader entrada =new InputStreamReader(System.in);
-		 BufferedReader teclado= new BufferedReader(entrada);
-		 
-		 System.out.println(mensaje);
-		try {
-			cadena=teclado.readLine();
-		} catch (IOException e) {
-			System.out.println("Error en la entrada de datos");
-		}
-		 return cadena;
-	}
+    public static String leerString(String mensaje) {
+        String cadena = "";
+        InputStreamReader entrada = new InputStreamReader(System.in);
+        BufferedReader teclado = new BufferedReader(entrada);
+
+        System.out.println(mensaje);
+        try {
+            cadena = teclado.readLine();
+        } catch (IOException e) {
+            System.out.println("Error en la entrada de datos");
+        }
+        return cadena;
+    }
 
     /**
-     *Method to control the input of a String with a maximum length
+     * Method to control the input of a String with a maximum length
+     *
      * @param x maximum length of the input String
      * @return String ready for use
      */
-    public static String leerString(int x){
-		String cadena = null;
-		boolean ok;
-		do{
-			ok = true;
-			cadena=introducirCadena();
-			if(cadena.length()>x){
-				System.out.println("Error, longitud superior a la permitida. Introduzca de nuevo: ");
-				ok = false;
-			}
-		}while(!ok);
-		return cadena;
-	}
-	
+    public static String leerString(int x) {
+        String cadena = null;
+        boolean ok;
+        do {
+            ok = true;
+            cadena = introducirCadena();
+            if (cadena.length() > x) {
+                System.out.println("Error, longitud superior a la permitida. Introduzca de nuevo: ");
+                ok = false;
+            }
+        } while (!ok);
+        return cadena;
+    }
+
     /**
      * Method to control the input of a single character
+     *
      * @return character ready for use
      */
-    public static char leerChar(){
-		boolean error=false;
-		String letra;
-		
-		do{
-			error=false;
-			letra=introducirCadena();
-			if(letra.length()!=1){
-				System.out.println("Error, introduce un car�cter: ");
-				error=true;
-			}
-			
-		}while(error);
-		return letra.charAt(0);
-	}
+    public static char leerChar() {
+        boolean error = false;
+        String letra;
+
+        do {
+            error = false;
+            letra = introducirCadena();
+            if (letra.length() != 1) {
+                System.out.println("Error, introduce un car�cter: ");
+                error = true;
+            }
+
+        } while (error);
+        return letra.charAt(0);
+    }
 
     /**
      * Method to control the input of a character with a display message
+     *
      * @param mensaje message that displays to the user asking for an input
      * @return character ready for use
      */
-    public static char leerChar(String mensaje)
-	{
-		char letra;
-		String frase;
-		System.out.println(mensaje);
-		do {
-			
-			frase=introducirCadena();
-			if (frase.length()!=1) {
-				System.out.println("Error, introduce un �nico car�cter: ");
-			}
-		}while (frase.length()!=1);
-		letra=frase.charAt(0);
-		
-		return letra;
-	}
-	
+    public static char leerChar(String mensaje) {
+        char letra;
+        String frase;
+        System.out.println(mensaje);
+        do {
+
+            frase = introducirCadena();
+            if (frase.length() != 1) {
+                System.out.println("Error, introduce un �nico car�cter: ");
+            }
+        } while (frase.length() != 1);
+        letra = frase.charAt(0);
+
+        return letra;
+    }
+
     /**
-     * Method to control the input of a character between two predetermined option
+     * Method to control the input of a character between two predetermined
+     * option
+     *
      * @param x first possible correct inpuy
      * @param y second possible correct input
      * @return possible character input
      */
-    public static char leerChar (char x, char y)
-	{
-		char letra;
-		String frase;
-		do{
-			do {
-				frase=introducirCadena();
-				if (frase.length()!=1) {
-					System.out.println("Error, introduce un �nico car�cter: ");
-				}
-			}while (frase.length()!=1);
-			letra=frase.charAt(0);
-			if(!(letra == x || letra==y))
-			{
-				System.out.println("Error car�cter no Valido");
-			}
-		}while (!(letra == x || letra==y));
-		return letra;		
-	}
-	
+    public static char leerChar(char x, char y) {
+        char letra;
+        String frase;
+        do {
+            do {
+                frase = introducirCadena();
+                if (frase.length() != 1) {
+                    System.out.println("Error, introduce un �nico car�cter: ");
+                }
+            } while (frase.length() != 1);
+            letra = frase.charAt(0);
+            if (!(letra == x || letra == y)) {
+                System.out.println("Error car�cter no Valido");
+            }
+        } while (!(letra == x || letra == y));
+        return letra;
+    }
+
     /**
-     * Method to control the input of a character between a set of predetermined option
+     * Method to control the input of a character between a set of predetermined
+     * option
+     *
      * @param caracteres collection of possible correct inputs
      * @return possible character input
      */
-    public static char leerCharArray(char caracteres[]){
-		int i;
-		boolean error=false;
-		String letra;
-		char aux=0;
-		
-		do{
-			error=false;
-			letra=introducirCadena();
-			if(letra.length()!=1){
-				System.out.println("Error, introduce un car�cter: ");
-				error=true;
-			}
-			else{
-				aux=letra.charAt(0);
-				for(i=0;i<caracteres.length;i++){
-					if(Character.toUpperCase(caracteres[i])==Character.toUpperCase(aux)){
-						break;
-					}
-				}
-				if(i==caracteres.length){
-					error=true;
-					System.out.println("Error, el car�cter introducido no es valido. ");
-				}
-			}
-		}while(error);
-		return aux;
-	}
-	
+    public static char leerCharArray(char caracteres[]) {
+        int i;
+        boolean error = false;
+        String letra;
+        char aux = 0;
+
+        do {
+            error = false;
+            letra = introducirCadena();
+            if (letra.length() != 1) {
+                System.out.println("Error, introduce un car�cter: ");
+                error = true;
+            } else {
+                aux = letra.charAt(0);
+                for (i = 0; i < caracteres.length; i++) {
+                    if (Character.toUpperCase(caracteres[i]) == Character.toUpperCase(aux)) {
+                        break;
+                    }
+                }
+                if (i == caracteres.length) {
+                    error = true;
+                    System.out.println("Error, el car�cter introducido no es valido. ");
+                }
+            }
+        } while (error);
+        return aux;
+    }
+
     /**
-     * Method to control the input of a character between a set of predetermined option
+     * Method to control the input of a character between a set of predetermined
+     * option
+     *
      * @param caracteres collection of possible correct inputs
      * @param mensaje message that displays to the user asking for an input
      * @return possible character input
      */
-    public static char leerCharArray(char caracteres[],String mensaje){
-		int i;
-		boolean error=false;
-		String letra;
-		char aux=0;
-		
-		do{
-			error=false;
-			letra=introducirCadena(mensaje);
-			if(letra.length()!=1){
-				System.out.println("Error, introduce un car�cter: ");
-				error=true;
-			}
-			else{
-				aux=letra.charAt(0);
-				for(i=0;i<caracteres.length;i++){
-					if(Character.toUpperCase(caracteres[i])==Character.toUpperCase(aux)){
-						break;
-					}
-				}
-				if(i==caracteres.length){
-					error=true;
-					System.out.println("Error, el car�cter introducido no es valido. ");
-				}
-			}
-		}while(error);
-		return aux;
-	}
-	
+    public static char leerCharArray(char caracteres[], String mensaje) {
+        int i;
+        boolean error = false;
+        String letra;
+        char aux = 0;
+
+        do {
+            error = false;
+            letra = leerString(mensaje);
+            if (letra.length() != 1) {
+                System.out.println("Error, introduce un car�cter: ");
+                error = true;
+            } else {
+                aux = letra.charAt(0);
+                for (i = 0; i < caracteres.length; i++) {
+                    if (Character.toUpperCase(caracteres[i]) == Character.toUpperCase(aux)) {
+                        break;
+                    }
+                }
+                if (i == caracteres.length) {
+                    error = true;
+                    System.out.println("Error, el car�cter introducido no es valido. ");
+                }
+            }
+        } while (error);
+        return aux;
+    }
+
     /**
      *
      * @return
      */
-    public static int leerInt(){
-		int num=0;
-		boolean error;
-		do{
-			error=false;
-			try{
-				num=Integer.parseInt(introducirCadena());
-			}
-			catch(NumberFormatException e){
-				System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
-				error=true;
-			}
-		}while(error);
-		return num;
-	}
+    public static int leerInt() {
+        int num = 0;
+        boolean error;
+        do {
+            error = false;
+            try {
+                num = Integer.parseInt(introducirCadena());
+            } catch (NumberFormatException e) {
+                System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
+                error = true;
+            }
+        } while (error);
+        return num;
+    }
 
     /**
      *
      * @param mensaje
      * @return
      */
-    public static int leerInt(String mensaje){
-		int num=0;
-		boolean error;
-		System.out.println(mensaje);
-		do{
-			error=false;
-			try{
-				num=Integer.parseInt(introducirCadena());
-			}
-			catch(NumberFormatException e){
-				System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
-				error=true;
-			}
-		}while(error);
-		return num;
-	}
-	
+    public static int leerInt(String mensaje) {
+        int num = 0;
+        boolean error;
+        System.out.println(mensaje);
+        do {
+            error = false;
+            try {
+                num = Integer.parseInt(introducirCadena());
+            } catch (NumberFormatException e) {
+                System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
+                error = true;
+            }
+        } while (error);
+        return num;
+    }
+
     /**
      *
      * @param x
      * @param y
      * @return
      */
-    public static int leerInt(int x, int y){
-		int num;
-		boolean error;
-		do{
-			error=false;
-			try{
-				num=Integer.parseInt(introducirCadena());
-			}
-			catch(NumberFormatException e){
-				System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
-				error=true;
-				num=x;
-			}
-			if (num<x || num>y){
-				System.out.println("Error, dato fuera de rango. Introduce de nuevo: ");
-				error=true;
-				
-			}
-		}while(error);
-		return num;
-	}
+    public static int leerInt(int x, int y) {
+        int num;
+        boolean error;
+        do {
+            error = false;
+            try {
+                num = Integer.parseInt(introducirCadena());
+            } catch (NumberFormatException e) {
+                System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
+                error = true;
+                num = x;
+            }
+            if (num < x || num > y) {
+                System.out.println("Error, dato fuera de rango. Introduce de nuevo: ");
+                error = true;
+
+            }
+        } while (error);
+        return num;
+    }
 
     /**
      *
@@ -285,71 +289,68 @@ public class Utilities {
      * @param mensaje
      * @return
      */
-    public static int leerInt(int x, int y,String mensaje){
-		int num;
-		boolean error;
-		System.out.println(mensaje);
-		do{
-			error=false;
-			try{
-				num=Integer.parseInt(introducirCadena());
-			}
-			catch(NumberFormatException e){
-				System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
-				error=true;
-				num=x;
-			}
-			if (num<x || num>y){
-				System.out.println("Error, dato fuera de rango. Introduce de nuevo: ");
-				error=true;
-				
-			}
-		}while(error);
-		return num;
-	}
+    public static int leerInt(int x, int y, String mensaje) {
+        int num;
+        boolean error;
+        System.out.println(mensaje);
+        do {
+            error = false;
+            try {
+                num = Integer.parseInt(introducirCadena());
+            } catch (NumberFormatException e) {
+                System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
+                error = true;
+                num = x;
+            }
+            if (num < x || num > y) {
+                System.out.println("Error, dato fuera de rango. Introduce de nuevo: ");
+                error = true;
+
+            }
+        } while (error);
+        return num;
+    }
 
     /**
      *
      * @return
      */
-    public static float leerFloat(){
-		float num=0;
-		boolean error;
-		do{
-			error=false;
-			try{
-				num=Float.parseFloat(introducirCadena());
-			}
-			catch(NumberFormatException e){
-				System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
-				error=true;
-			}
-		}while(error);
-		return num;
-	}
+    public static float leerFloat() {
+        float num = 0;
+        boolean error;
+        do {
+            error = false;
+            try {
+                num = Float.parseFloat(introducirCadena());
+            } catch (NumberFormatException e) {
+                System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
+                error = true;
+            }
+        } while (error);
+        return num;
+    }
 
     /**
      *
      * @param mensaje
      * @return
      */
-    public static float leerFloat(String mensaje){
-		float num=0;
-		boolean ok=true;
-		System.out.println(mensaje);
-		do{
-			ok=true;
-			
-			try{
-				num=Float.parseFloat(introducirCadena());
-			}
-			catch(NumberFormatException e){
-				ok=false;	
-				System.out.println("Error al introducir un n�mero");
-			}
-		}while (!ok);
-		return num;
-	}
+    public static float leerFloat(String mensaje) {
+        float num = 0;
+        boolean ok = true;
+        System.out.println(mensaje);
+        do {
+            ok = true;
+
+            try {
+                num = Float.parseFloat(introducirCadena());
+            } catch (NumberFormatException e) {
+                ok = false;
+                System.out.println("Error al introducir un n�mero");
+            }
+        } while (!ok);
+        return num;
+    }
 
     /**
      *
@@ -357,28 +358,27 @@ public class Utilities {
      * @param y
      * @return
      */
-    public static float leerFloat(float x, float y){
-		float num;
-		boolean error;
-		do{
-			error=false;
-			try{
-				num=Float.parseFloat(introducirCadena());
-			}
-			catch(NumberFormatException e){
-				System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
-				error=true;
-				num=x;
-			}
-			if (num<x || num>y){
-				System.out.println("Error, dato fuera de rango. Introduce de nuevo: ");
-				error=true;
-				
-			}
-		}while(error);
-		return num;
-	}
-	
+    public static float leerFloat(float x, float y) {
+        float num;
+        boolean error;
+        do {
+            error = false;
+            try {
+                num = Float.parseFloat(introducirCadena());
+            } catch (NumberFormatException e) {
+                System.out.println("Error, el dato no es num�rico. Introduce de nuevo: ");
+                error = true;
+                num = x;
+            }
+            if (num < x || num > y) {
+                System.out.println("Error, dato fuera de rango. Introduce de nuevo: ");
+                error = true;
+
+            }
+        } while (error);
+        return num;
+    }
+
     /**
      *
      * @param x
@@ -386,121 +386,159 @@ public class Utilities {
      * @return
      */
     public static double leerDouble(double x, double y) {
-		double num = 0;
-		boolean ok;
-		do {
-			try {
-				ok = true;
-				num =Double.parseDouble(introducirCadena());
+        double num = 0;
+        boolean ok;
+        do {
+            try {
+                ok = true;
+                num = Double.parseDouble(introducirCadena());
 
-			} catch (NumberFormatException e) {
-				System.out.println("Hay que introducir n�meros");
-				ok = false;
-				num = x;
+            } catch (NumberFormatException e) {
+                System.out.println("Hay que introducir n�meros");
+                ok = false;
+                num = x;
 
-			}
-			if (num < x || num > y) {
-				System.out.println("Dato fuera de rango, introduce entre" + x + " y " + y);
-				ok = false;
-			}
-		} while (!ok);
-		return num;
-	}
+            }
+            if (num < x || num > y) {
+                System.out.println("Dato fuera de rango, introduce entre" + x + " y " + y);
+                ok = false;
+            }
+        } while (!ok);
+        return num;
+    }
 
     /**
      *
      * @return
      */
     public static double leerDouble() {
-		double fNumero = 0;
-		boolean ok;
-		do {
-			try {
-				fNumero = Double.parseDouble(introducirCadena());
-				ok = true;
-			} catch (NumberFormatException e) {
-				System.out.println("Error al introducir el n?mero");
-				ok = false;
-			}
-		} while (!ok);
-		return fNumero;
-	}
+        double fNumero = 0;
+        boolean ok;
+        do {
+            try {
+                fNumero = Double.parseDouble(introducirCadena());
+                ok = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Error al introducir el n?mero");
+                ok = false;
+            }
+        } while (!ok);
+        return fNumero;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static double leerDouble(String mensaje) {
+        double fNumero = 0;
+        boolean ok;
+        System.out.println(mensaje);
+        do {
+            try {
+                fNumero = Double.parseDouble(introducirCadena());
+                ok = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Error al introducir el n?mero");
+                ok = false;
+            }
+        } while (!ok);
+        return fNumero;
+    }
 
     /**
      *
      * @return
      */
     public static long leerLong() {
-		long fNumero = 0;
-		boolean ok;
-		do {
-			try {
-				fNumero = Long.parseLong(introducirCadena());
-				ok = true;
-			} catch (NumberFormatException e) {
-				System.out.println("Error al introducir el n?mero");
-				ok = false;
-			}
-		} while (!ok);
-		return fNumero;
-	}
-	
+        long fNumero = 0;
+        boolean ok;
+        do {
+            try {
+                fNumero = Long.parseLong(introducirCadena());
+                ok = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Error al introducir el n?mero");
+                ok = false;
+            }
+        } while (!ok);
+        return fNumero;
+    }
+    
     /**
      *
      * @return
      */
-    public static boolean esBoolean(){
-		String respu;
-		do{
-			respu=introducirCadena().toLowerCase();
-		}while(!respu.equals("0") &&!respu.equals("1") && !respu.equals("si") && !respu.equals("no") && !respu.equals("s") && !respu.equals("n") && !respu.equals("true") && !respu.equals("false") );
-		if(respu.equals("1")||respu.equals("si")||respu.equals("s")||respu.equals("true")){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
+    public static long leerLong(String mensaje) {
+        long fNumero = 0;
+        boolean ok;
+        System.out.println(mensaje);
+        do {
+            try {
+                fNumero = Long.parseLong(introducirCadena());
+                ok = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Error al introducir el n?mero");
+                ok = false;
+            }
+        } while (!ok);
+        return fNumero;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static boolean esBoolean() {
+        String respu;
+        do {
+            respu = introducirCadena().toLowerCase();
+        } while (!respu.equals("0") && !respu.equals("1") && !respu.equals("si") && !respu.equals("no") && !respu.equals("s") && !respu.equals("n") && !respu.equals("true") && !respu.equals("false"));
+        if (respu.equals("1") || respu.equals("si") || respu.equals("s") || respu.equals("true")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      *
      * @param mensaje
      * @return
      */
-    public static boolean esBoolean(String mensaje){
-		String respu;
-		do{
-			respu=introducirCadena(mensaje).toLowerCase();
-		}while(!respu.equals("0") &&!respu.equals("1") && !respu.equals("si") && !respu.equals("no") && !respu.equals("s") && !respu.equals("n") && !respu.equals("true") && !respu.equals("false") );
-		if(respu.equals("1")||respu.equals("si")||respu.equals("s")||respu.equals("true")){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
+    public static boolean esBoolean(String mensaje) {
+        String respu;
+        do {
+            respu = leerString(mensaje).toLowerCase();
+        } while (!respu.equals("0") && !respu.equals("1") && !respu.equals("si") && !respu.equals("no") && !respu.equals("s") && !respu.equals("n") && !respu.equals("true") && !respu.equals("false"));
+        if (respu.equals("1") || respu.equals("si") || respu.equals("s") || respu.equals("true")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      *
      * @return
      */
     public static LocalDate leerFecha() {
-		String fechaAux;
-		LocalDate fecha = LocalDate.now();
-		boolean error;
-		DateTimeFormatter formateador=DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		do{
-	 		error=false;
-	  		fechaAux=Utilities.introducirCadena();
-	 		 try{		
-	   			fecha=LocalDate.parse(fechaAux, formateador);
-	 		 } catch(DateTimeParseException e){
-	  	 	error=true;
-			System.out.println("Error, introduce fecha con formato dd/mm/aaaa: ");
-	 		 }
-		}while (error);
-		return fecha;
-	}
+        String fechaAux;
+        LocalDate fecha = LocalDate.now();
+        boolean error;
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        do {
+            error = false;
+            fechaAux = Utilities.introducirCadena();
+            try {
+                fecha = LocalDate.parse(fechaAux, formateador);
+            } catch (DateTimeParseException e) {
+                error = true;
+                System.out.println("Error, introduce fecha con formato dd/mm/aaaa: ");
+            }
+        } while (error);
+        return fecha;
+    }
 
     /**
      *
@@ -508,23 +546,23 @@ public class Utilities {
      * @return
      */
     public static LocalDate leerFecha(String mensaje) {
-		String fechaAux;
-		LocalDate fechaNac = LocalDate.now();
-		boolean error;
-		DateTimeFormatter formateador=DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		System.out.println(mensaje);
-		do{
-	  		error=false;
-			fechaAux=Utilities.introducirCadena();
-	  		try{		
-	   			fechaNac=LocalDate.parse(fechaAux, formateador);
-			} catch(DateTimeParseException e){
-	   		error=true;
-			System.out.println("Error, introduce fecha con formato dd/mm/aaaa: ");
-			}
-		}while (error);
-		return fechaNac;
-	}
+        String fechaAux;
+        LocalDate fechaNac = LocalDate.now();
+        boolean error;
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        System.out.println(mensaje);
+        do {
+            error = false;
+            fechaAux = Utilities.introducirCadena();
+            try {
+                fechaNac = LocalDate.parse(fechaAux, formateador);
+            } catch (DateTimeParseException e) {
+                error = true;
+                System.out.println("Error, introduce fecha con formato dd/mm/aaaa: ");
+            }
+        } while (error);
+        return fechaNac;
+    }
 
     /**
      *
@@ -532,54 +570,52 @@ public class Utilities {
      * @return
      */
     public static String fechaToString(LocalDate fecha) {
-		DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		String wfecha;
-		
-		wfecha = fecha.format(formateador);
-		
-		return wfecha;
-	}
-	
-	//Devuelve el n�mero de objetos de un fichero
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String wfecha;
 
+        wfecha = fecha.format(formateador);
+
+        return wfecha;
+    }
+
+    //Devuelve el n�mero de objetos de un fichero
     /**
      *
      * @param fich
      * @return
      */
-	 public static int calculoFichero(File fich){
-	 	int cont=0;
-	 	if (fich.exists()){
-		 	FileInputStream fis=null;
-		 	ObjectInputStream ois=null;
-		 	try{
-		 		fis=new FileInputStream(fich);
-		 		ois=new ObjectInputStream(fis);
-	
-		 		Object aux=ois.readObject();
-	
-		 		while (aux!=null){
-		 			cont++;
-		 			aux=ois.readObject();
-		 		}
-		 		
-	
-		 	}catch(EOFException e1){
-				//System.out.println("Has acabado de leer, tienes "+cont+" objetos");
-				
-		 	}catch (Exception e2){
-				 e2.printStackTrace();
-		 	}
-		 	
-		 	
-		 	try {
-				ois.close();
-				fis.close();
-			} catch (IOException e) {
-				System.out.println("Error al cerrar los flujos");
-				
-			}
-	 	}
-	 	return cont;
-	 }
+    public static int calculoFichero(File fich) {
+        int cont = 0;
+        if (fich.exists()) {
+            FileInputStream fis = null;
+            ObjectInputStream ois = null;
+            try {
+                fis = new FileInputStream(fich);
+                ois = new ObjectInputStream(fis);
+
+                Object aux = ois.readObject();
+
+                while (aux != null) {
+                    cont++;
+                    aux = ois.readObject();
+                }
+
+            } catch (EOFException e1) {
+                //System.out.println("Has acabado de leer, tienes "+cont+" objetos");
+
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+
+            try {
+                ois.close();
+                fis.close();
+            } catch (IOException e) {
+                System.out.println("Error al cerrar los flujos");
+
+            }
+        }
+        return cont;
+    }
+
 }

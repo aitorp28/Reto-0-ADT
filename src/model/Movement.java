@@ -7,16 +7,15 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.concurrent.ThreadLocalRandom;
 import utilities.Utilities;
 
 /**
  * The Class that represents the values from the Movement table on the DDBB
+ *
  * @author Jaime San Sebastián
  */
-public class Movement implements Serializable{
+public class Movement implements Serializable {
+
     private long id;
     private double amount;
     private double balance;
@@ -107,9 +106,10 @@ public class Movement implements Serializable{
     public void setAccount_id(long account_id) {
         this.account_id = account_id;
     }
-    
+
     /**
      * Method for recording the data of a new Movement
+     *
      * @param acc previously checked existing Account to link the Movement to
      */
     public void setData(long acc, double bal) {
@@ -119,5 +119,10 @@ public class Movement implements Serializable{
         this.setBalance(bal + this.getAmount());
         System.out.println("Introduzca una descripción de la cuenta");
         this.setDescription(Utilities.leerString(100));
+    }
+
+    @Override
+    public String toString() {
+        return "Movement{" + "id=" + id + ", amount=" + amount + ", balance=" + balance + ", description=" + description + ", timeStamp=" + timeStamp + ", account_id=" + account_id + '}';
     }
 }

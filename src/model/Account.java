@@ -131,17 +131,13 @@ public class Account implements Serializable {
      * save it on the DDBB
      */
     public void setData() {
-        System.out.println("Introduzca el importe inicial de la cuenta");
-        this.setBeginBalance(Utilities.leerDouble());
+        this.setBeginBalance(Utilities.leerDouble("Introduzca el importe inicial de la cuenta"));
         this.setBalance(this.getBeginBalance());
-        System.out.println("Introduzca el crédito de la cuenta de la cuenta");
-        this.setCreditLine(Utilities.leerDouble());
-        System.out.println("Introduzca una descripción de la cuenta");
-        this.setDescription(Utilities.leerString(10000000));
-        System.out.println("Indique el tipo de la cuenta:\n"
-                + "0 - Débito\n"
-                + "1 - Crédito");
-        this.setType(Utilities.leerInt(0, 1));
+        this.setCreditLine(Utilities.leerDouble("Introduzca el crédito de la cuenta de la cuenta"));
+        this.setDescription(Utilities.leerString("Introduzca una descripción de la cuenta"));
+        this.setType(Utilities.leerInt(0, 1, "Indique el tipo de la cuenta:\n"
+                + "0 - STANDARD\n"
+                + "1 - CREDIT"));
         this.setBeginBalanceTimeStamp(Timestamp.from(Instant.now()));
     }
 
@@ -151,8 +147,12 @@ public class Account implements Serializable {
      * @return the id
      */
     public static long askId() {
-        long id = Utilities.leerInt("Introduzca la id del usuarios a buscar");
+        long id = Utilities.leerLong("Introduzca la id de la Account a buscar");
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", balance=" + balance + ", beginBalance=" + beginBalance + ", beginBalanceTimeStamp=" + beginBalanceTimeStamp + ", creditLine=" + creditLine + ", description=" + description + ", type=" + type + '}';
+    }    
 }

@@ -21,7 +21,7 @@ public class Customer implements Serializable {
     private String firstName;
     private String lastName;
     private String middleInitial;
-    private int phone;
+    private long phone;
     private String state;
     private String street;
     private int zip;
@@ -113,14 +113,14 @@ public class Customer implements Serializable {
     /**
      * @return the phone
      */
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 
     /**
      * @param phone the phone to set
      */
-    public void setPhone(int phone) {
+    public void setPhone(long phone) {
         this.phone = phone;
     }
 
@@ -171,7 +171,15 @@ public class Customer implements Serializable {
      * save it on the DDBB
      */
     public void setData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.city = Utilities.leerString("Introduzca la ciudad del Customer");
+        this.email = Utilities.leerString("Introduzca el email del Customer");
+        this.firstName = Utilities.leerString("Introduzca el nombre del Customer");
+        this.lastName = Utilities.leerString("Introduzca el Apellido del Customer");
+        this.middleInitial = Utilities.leerString("Introduzca posibles iniciales del Customer");
+        this.phone = Utilities.leerLong("Introduzca el teléfono del Customer");
+        this.state = Utilities.leerString("Introduzca el estado/provincia donde vive del Customer");
+        this.street = Utilities.leerString("Introduzca el país del Customer");
+        this.zip = Utilities.leerInt("Introduzca el Código Postal del Customer");
     }
 
     /**
@@ -180,7 +188,12 @@ public class Customer implements Serializable {
      * @return the id
      */
     public static long askId() {
-        long id = Utilities.leerInt("Introduzca el id de la cuenta a buscar");
+        long id = Utilities.leerLong("Introduzca el id del Customer a buscar");
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "id=" + id + ", city=" + city + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", phone=" + phone + ", state=" + state + ", street=" + street + ", zip=" + zip + '}';
     }
 }

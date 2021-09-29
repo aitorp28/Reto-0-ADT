@@ -19,6 +19,9 @@ import model.Movement;
  */
 public class Controller {
 
+    private DAO dao;
+    private View view;
+    
     /**
      * Method to control the flux of the application
      * @param view implementation of the desired view type
@@ -28,36 +31,37 @@ public class Controller {
      * @throws ReadException if fails trying to read from the DDBB
      */
     public void run(View view, DAO dao) throws ReadException, ConnectException, CreateException, UpdateException {
+        this.dao = dao;
+        this.view = view;
         int opc = 0;
         do {
             opc = view.menu();
             switch (opc) {
                 case 1:
-                    dao.createCustomer();
+                    createCustomer();
                     break;
                 case 2:
-                    Customer cus = dao.searchCustomer();
-                    view.searchCustomer(cus);
+                    Customer cus = searchCustomer();
                     break;
                 case 3:
-                    Collection<Account> accounts = dao.listAccount();
+                    Collection<Account> accounts = listAccount();
                     view.listAccount(accounts);
                     break;
                 case 4:
-                    dao.createAccount();
+                    createAccount();
                     break;
                 case 5:
-                    dao.addCustomerToAccount();
+                    addCustomerToAccount();
                     break;
                 case 6:
-                    Account account = dao.readAccount();
+                    Account account = readAccount();
                     view.readAccount(account);
                     break;
                 case 7:
-                    dao.createMovement();
+                    createMovement();
                     break;
                 case 8:
-                    Collection<Movement> mov = dao.listMovement();
+                    Collection<Movement> mov = listMovement();
                     view.listMovement(mov);
                     break;
                 case 9:
@@ -65,5 +69,38 @@ public class Controller {
                     break;
             }
         } while (opc != 9);
+    }
+
+    private void createCustomer() {
+        dao.createCustomer();
+    }
+
+    private Customer searchCustomer() {
+    
+                    view.searchCustomer(cus);
+    }
+
+    private Collection<Account> listAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void createAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void addCustomerToAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private Account readAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void createMovement() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private Collection<Movement> listMovement() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
